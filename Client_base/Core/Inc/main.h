@@ -62,6 +62,21 @@ void MX_USART1_UART_Init(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define B1_Pin GPIO_PIN_4
+#define B1_GPIO_Port GPIOC
+#define B1_EXTI_IRQn EXTI4_IRQn
+#define LD2_Pin GPIO_PIN_0
+#define LD2_GPIO_Port GPIOB
+#define LD3_Pin GPIO_PIN_1
+#define LD3_GPIO_Port GPIOB
+#define B2_Pin GPIO_PIN_0
+#define B2_GPIO_Port GPIOD
+#define B2_EXTI_IRQn EXTI0_IRQn
+#define B3_Pin GPIO_PIN_1
+#define B3_GPIO_Port GPIOD
+#define B3_EXTI_IRQn EXTI1_IRQn
+#define LD1_Pin GPIO_PIN_5
+#define LD1_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
