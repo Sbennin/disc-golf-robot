@@ -65,6 +65,7 @@ void Stop_Motor()
 {
 	//HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
 	Update_PWM(0);
+	Motor_Stopped_Complete();
 	//HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
 }
 
@@ -119,7 +120,7 @@ uint16_t Read_Speed() //rpm
 	return speed;
 }
 
-void Set_Speed(uint32_t goal)
+void Set_Speed(uint32_t goal) //TODO detect failure
 {
 	float Kp = 0.03;
 	float Ki = 0.04;
@@ -165,6 +166,7 @@ void Set_Speed(uint32_t goal)
 		failures++;
 
 	} while(stable < stable_threshold && failures < failure_threshold);
+	Motor_Done_Complete();
 }
 
 void Update_PWM(uint32_t duty)

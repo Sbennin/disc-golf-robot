@@ -151,37 +151,41 @@ void P2PS_STM_App_Notification(P2PS_STM_App_Notification_evt_t *pNotification)
 /* USER CODE BEGIN P2PS_STM_WRITE_EVT */
     	//TODO get motor goal speed from client
       if(pNotification->DataTransfered.pPayload[0] == 0x00){ /* ALL Deviceselected - may be necessary as LB Routeur informs all connection */
-        if(pNotification->DataTransfered.pPayload[1] == 0x01)
-        {
-          BSP_LED_On(LED_BLUE);
-          APP_DBG_MSG("-- P2P APPLICATION SERVER  : LED1 ON\n"); 
-          APP_DBG_MSG(" \n\r");
-          P2P_Server_App_Context.LedControl.Led1=0x01; /* LED1 ON */
-        }
-        if(pNotification->DataTransfered.pPayload[1] == 0x00)
-        {
-          BSP_LED_Off(LED_BLUE);
-          APP_DBG_MSG("-- P2P APPLICATION SERVER  : LED1 OFF\n"); 
-          APP_DBG_MSG(" \n\r");
-          P2P_Server_App_Context.LedControl.Led1=0x00; /* LED1 OFF */
-        }
+    	  uint16_t goal_speed = pNotification->DataTransfered.pPayload[1];
+    	  P2P_Server_App_Context.GoalControl.GoalSpeed = goal_speed;
+    	  Motor_Pending_Complete();
+
+    	  if(goal_speed == 0)
+    	  {
+    		  APP_DBG_MSG("-- P2P APPLICATION SERVER  : STOP MOTOR\n");
+    		  APP_DBG_MSG(" \n\r");
+    		  Stop_Motor();
+    	  }
+    	  else
+    	  {
+    		  APP_DBG_MSG("-- P2P APPLICATION SERVER  : SETTING SPEED\n");
+    		  APP_DBG_MSG(" \n\r");
+    		  Set_Speed(goal_speed);
+    	  }
       }
 #if(P2P_SERVER1 != 0)
       if(pNotification->DataTransfered.pPayload[0] == 0x01){ /* end device 1 selected - may be necessary as LB Routeur informs all connection */
-        if(pNotification->DataTransfered.pPayload[1] == 0x01)
-        {
-          BSP_LED_On(LED_BLUE);
-          APP_DBG_MSG("-- P2P APPLICATION SERVER 1 : LED1 ON\n"); 
-          APP_DBG_MSG(" \n\r");
-          P2P_Server_App_Context.LedControl.Led1=0x01; /* LED1 ON */
-        }
-        if(pNotification->DataTransfered.pPayload[1] == 0x00)
-        {
-          BSP_LED_Off(LED_BLUE);
-          APP_DBG_MSG("-- P2P APPLICATION SERVER 1 : LED1 OFF\n"); 
-          APP_DBG_MSG(" \n\r");
-          P2P_Server_App_Context.LedControl.Led1=0x00; /* LED1 OFF */
-        }
+    	  uint16_t goal_speed = pNotification->DataTransfered.pPayload[1];
+    	  P2P_Server_App_Context.GoalControl.GoalSpeed = goal_speed;
+    	  Motor_Pending_Complete();
+
+    	  if(goal_speed == 0)
+    	  {
+    		  APP_DBG_MSG("-- P2P APPLICATION SERVER  : STOP MOTOR\n");
+    		  APP_DBG_MSG(" \n\r");
+    		  Stop_Motor();
+    	  }
+    	  else
+    	  {
+    		  APP_DBG_MSG("-- P2P APPLICATION SERVER  : SETTING SPEED\n");
+    		  APP_DBG_MSG(" \n\r");
+    		  Set_Speed(goal_speed);
+    	  }
       }
 #endif
 /* USER CODE END P2PS_STM_WRITE_EVT */
