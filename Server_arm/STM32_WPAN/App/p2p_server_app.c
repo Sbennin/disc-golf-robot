@@ -143,7 +143,7 @@ void P2PS_STM_App_Notification(P2PS_STM_App_Notification_evt_t *pNotification)
 /* USER CODE END P2PS_STM_NOTIFY_DISABLED_EVT */
       break;
 
-    case P2PS_STM_WRITE_EVT: //TODO, get goal speed from client
+    case P2PS_STM_WRITE_EVT:
 /* USER CODE BEGIN P2PS_STM_WRITE_EVT */
       if(pNotification->DataTransfered.pPayload[0] == 0x00){ /* ALL Deviceselected - may be necessary as LB Routeur informs all connection */
         if(pNotification->DataTransfered.pPayload[1] == 0x01)
