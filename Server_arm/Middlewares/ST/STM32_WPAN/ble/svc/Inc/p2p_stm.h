@@ -42,7 +42,7 @@ typedef enum
 
 typedef struct
 {
-  uint8_t * pPayload;
+  uint16_t * pPayload;
   uint8_t     Length;
 }P2PS_STM_Data_t;  
 

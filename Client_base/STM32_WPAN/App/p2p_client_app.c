@@ -46,7 +46,7 @@ typedef enum
 
 typedef struct
 {
-  uint8_t * pPayload;
+  uint16_t * pPayload;
   uint8_t     Length;
 }P2P_Client_Data_t;
 
@@ -106,6 +106,7 @@ typedef struct
 }P2P_ClientContext_t;
 
 /* USER CODE BEGIN PTD */
+/*
 typedef struct{
   uint8_t                                     Device_Led_Selection;
   uint8_t                                     Led1;
@@ -115,14 +116,30 @@ typedef struct{
   uint8_t                                     Device_Button_Selection;
   uint8_t                                     Button1;
 }P2P_ButtonCharValue_t;
+*/
+enum Motor_State {
+  STOPPED,
+  PENDING,
+  DONE
+};
+
+typedef struct
+{
+	uint16_t GoalSpeed;
+}P2P_GoalSpeed_t;
+
+typedef struct
+{
+	Motor_State MotorState;
+}P2P_MotorState_t;
 
 typedef struct
 {
 
   uint8_t       Notification_Status; /* used to check if P2P Server is enabled to Notify */
 
-  P2P_LedCharValue_t         LedControl;
-  P2P_ButtonCharValue_t      ButtonStatus;
+  P2P_GoalSpeed_t       GoalControl;
+  P2P_MotorState_t      MotorStateControl;
 
   uint16_t ConnectionHandle; 
 
@@ -162,7 +179,7 @@ static P2P_Client_App_Context_t P2P_Client_App_Context;
 static void Gatt_Notification(P2P_Client_App_Notification_evt_t *pNotification);
 static SVCCTL_EvtAckStatus_t Event_Handler(void *Event);
 /* USER CODE BEGIN PFP */
-static tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload);
+static tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload); //TODO increase to 16 bit payload
 static void Button_Trigger_Received( void );
 static void Update_Service( void );
 /* USER CODE END PFP */
@@ -177,12 +194,14 @@ void P2PC_APP_Init(void)
 {
   uint8_t index =0;
 /* USER CODE BEGIN P2PC_APP_Init_1 */
+  //TODO register tasks to sequencer
   UTIL_SEQ_RegTask( 1<< CFG_TASK_SEARCH_SERVICE_ID, UTIL_SEQ_RFU, Update_Service );
   UTIL_SEQ_RegTask( 1<< CFG_TASK_SW1_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, Button_Trigger_Received );
 
   /**
    * Initialize LedButton Service
    */
+  //TODO initialize structs
   P2P_Client_App_Context.Notification_Status=0;
   P2P_Client_App_Context.ConnectionHandle =  0x00;
 
@@ -238,7 +257,7 @@ void P2PC_APP_Notification(P2PC_APP_ConnHandle_Not_evt_t *pNotification)
       {
         aP2PClientContext[index].state = APP_BLE_IDLE;
       }
-      BSP_LED_Off(LED_BLUE); 
+      BSP_LED_Off(LED_BLUE); //TODO disconnect event
         
 #if OOB_DEMO == 0
       UTIL_SEQ_SetTask(1<<CFG_TASK_CONN_DEV_1_ID, CFG_SCH_PRIO_0);
@@ -259,9 +278,9 @@ void P2PC_APP_Notification(P2PC_APP_ConnHandle_Not_evt_t *pNotification)
   return;
 }
 /* USER CODE BEGIN FD */
-void P2PC_APP_SW1_Button_Action(void)
+void P2PC_APP_SW1_Button_Action(void) //called from button interrupt
 {
-
+	//TODO run task from sequencer
   UTIL_SEQ_SetTask(1<<CFG_TASK_SW1_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
 
 }
@@ -579,7 +598,8 @@ void Gatt_Notification(P2P_Client_App_Notification_evt_t *pNotification)
     case P2P_NOTIFICATION_INFO_RECEIVED_EVT:
 /* USER CODE BEGIN P2P_NOTIFICATION_INFO_RECEIVED_EVT */
     {
-      P2P_Client_App_Context.LedControl.Device_Led_Selection=pNotification->DataTransfered.pPayload[0];
+      //TODO got notification from server
+    	P2P_Client_App_Context.LedControl.Device_Led_Selection=pNotification->DataTransfered.pPayload[0];
       switch(P2P_Client_App_Context.LedControl.Device_Led_Selection) {
 
         case 0x01 : {
@@ -626,7 +646,7 @@ uint8_t P2P_Client_APP_Get_State( void ) {
  * @param  pFeatureValue: The address of the new value to be written
  * @retval None
  */
-tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload)
+tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload) //TODO increase payload size
 {
   tBleStatus ret = BLE_STATUS_INVALID_PARAMS;
   uint8_t index;
@@ -638,6 +658,7 @@ tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload
     switch(UUID)
     {
       case P2P_WRITE_CHAR_UUID: /* SERVER RX -- so CLIENT TX */
+    	  //TODO write to server
         ret = aci_gatt_write_without_resp(aP2PClientContext[index].connHandle,
                                          aP2PClientContext[index].P2PWriteToServerCharHdle,
                                          2, /* charValueLen */
@@ -652,7 +673,7 @@ tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload
   return ret;
 }/* end Write_Char() */
 
-void Button_Trigger_Received(void)
+void Button_Trigger_Received(void) //TODO run from sequencer, button interrupt
 {
   APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON PUSHED - WRITE TO SERVER \n ");
   APP_DBG_MSG(" \n\r");
@@ -708,7 +729,7 @@ void Update_Service()
                                  2,
                                  (uint8_t *)&enable);
         aP2PClientContext[index].state = APP_BLE_CONNECTED_CLIENT;
-        BSP_LED_Off(LED_RED);
+        BSP_LED_Off(LED_RED); //TODO maybe get rid of this
         break;
       case APP_BLE_DISABLE_NOTIFICATION_DESC :
         APP_DBG_MSG("* GATT : Disable Server Notification\n");
