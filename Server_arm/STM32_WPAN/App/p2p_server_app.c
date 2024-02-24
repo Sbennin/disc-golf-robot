@@ -62,7 +62,7 @@ typedef struct
 } P2P_Server_App_Context_t;
 
 enum Motor_State {
-  STOP,
+  STOPPED,
   PENDING,
   DONE
 };
@@ -103,8 +103,12 @@ static P2P_Server_App_Context_t P2P_Server_App_Context;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-static void P2PS_Send_Notification(void);
-static void P2PS_APP_LED_BUTTON_context_Init(void);
+//static void P2PS_Send_Notification(void);
+//static void P2PS_APP_LED_BUTTON_context_Init(void);
+static void P2PS_APP_MOTOR_context_Init(void);
+static void P2PS_Send_Notification_Stopped(void);
+static void P2PS_Send_Notification_Pending(void);
+static void P2PS_Send_Notification_Done(void);
 /* USER CODE END PFP */
 
 /* Functions Definition ------------------------------------------------------*/
@@ -213,7 +217,8 @@ void P2PS_APP_Notification(P2PS_APP_ConnHandle_Not_evt_t *pNotification)
 
     case PEER_DISCON_HANDLE_EVT :
 /* USER CODE BEGIN PEER_DISCON_HANDLE_EVT */
-       P2PS_APP_LED_BUTTON_context_Init();       //TODO
+       //P2PS_APP_LED_BUTTON_context_Init();       //TODO
+       P2PS_APP_MOTOR_context_Init();
 /* USER CODE END PEER_DISCON_HANDLE_EVT */
     break;
 
@@ -233,29 +238,47 @@ void P2PS_APP_Init(void)
 {
 /* USER CODE BEGIN P2PS_APP_Init */
 	//TODO registers send notification task to sequencer under ID
-  UTIL_SEQ_RegTask( 1<< CFG_TASK_SW1_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, P2PS_Send_Notification );
+  //UTIL_SEQ_RegTask( 1<< CFG_TASK_SW1_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, P2PS_Send_Notification );
+  UTIL_SEQ_RegTask( 1<< CFG_TASK_MOTOR_STOPPED_ID, UTIL_SEQ_RFU, P2PS_Send_Notification_Stopped);
+  UTIL_SEQ_RegTask( 1<< CFG_TASK_MOTOR_PENDING_ID, UTIL_SEQ_RFU, P2PS_Send_Notification_Pending);
+  UTIL_SEQ_RegTask( 1<< CFG_TASK_MOTOR_DONE_ID, UTIL_SEQ_RFU, P2PS_Send_Notification_Done);
 
   /**
    * Initialize LedButton Service
    */
+  //TODO
   P2P_Server_App_Context.Notification_Status=0; 
-  P2PS_APP_LED_BUTTON_context_Init();
+  //P2PS_APP_LED_BUTTON_context_Init();
+  P2PS_APP_MOTOR_context_Init();
 /* USER CODE END P2PS_APP_Init */
   return;
 }
 
 /* USER CODE BEGIN FD */
-void P2PS_APP_LED_BUTTON_context_Init(void){
+/*void P2PS_APP_LED_BUTTON_context_Init(void){
   //TODO initializes peripheral state
   BSP_LED_Off(LED_BLUE);
   APP_DBG_MSG("LED BLUE OFF\n");
   
   //TODO initializes struct
   #if(P2P_SERVER1 != 0)
-  P2P_Server_App_Context.LedControl.Device_Led_Selection=0x01; /* Device1 */
-  P2P_Server_App_Context.LedControl.Led1=0x00; /* led OFF */
-  P2P_Server_App_Context.ButtonControl.Device_Button_Selection=0x01;/* Device1 */
+  P2P_Server_App_Context.LedControl.Device_Led_Selection=0x01; // Device1
+  P2P_Server_App_Context.LedControl.Led1=0x00; // led OFF
+  P2P_Server_App_Context.ButtonControl.Device_Button_Selection=0x01;// Device1
   P2P_Server_App_Context.ButtonControl.ButtonStatus=0x00;
+#endif
+}*/
+
+void P2PS_APP_MOTOR_context_Init(void){
+  //initializes peripheral state
+  Stop_Motor();
+  Set_CW();
+  APP_DBG_MSG("MOTOR STOPPED\n");
+
+  //initializes struct
+  #if(P2P_SERVER1 != 0)
+  P2P_Server_App_Context.GoalControl.GoalSpeed=0; //goal speed is 0
+  P2P_Server_App_Context.MotorStateControl.MotorState=STOPPED;
 #endif
 }
 
@@ -266,6 +289,27 @@ void P2PS_APP_SW1_Button_Action(void) //run from button interrupt
 
   return;
 }
+
+void Motor_Stopped_Complete(void)
+{
+	UTIL_SEQ_SetTask( 1<<CFG_TASK_MOTOR_STOPPED_ID, CFG_SCH_PRIO_0);
+
+	return;
+}
+
+void Motor_Pending_Complete(void)
+{
+	UTIL_SEQ_SetTask( 1<<CFG_TASK_MOTOR_PENDING_ID, CFG_SCH_PRIO_0);
+
+	return;
+}
+
+void Motor_Done_Complete(void)
+{
+	UTIL_SEQ_SetTask( 1<<CFG_TASK_MOTOR_DONE_ID, CFG_SCH_PRIO_0);
+
+	return;
+}
 /* USER CODE END FD */
 
 /*************************************************************
@@ -274,7 +318,7 @@ void P2PS_APP_SW1_Button_Action(void) //run from button interrupt
  *
  *************************************************************/
 /* USER CODE BEGIN FD_LOCAL_FUNCTIONS*/
-void P2PS_Send_Notification(void) //run from sequencer
+/*void P2PS_Send_Notification(void) //run from sequencer
 {
  //TODO updating struct
   if(P2P_Server_App_Context.ButtonControl.ButtonStatus == 0x00){
@@ -293,6 +337,55 @@ void P2PS_Send_Notification(void) //run from sequencer
    }
 
   return;
+} */
+
+void P2PS_Send_Notification_Done(void) //run from sequencer
+{
+	P2P_Server_App_Context.MotorStateControl.MotorState = DONE;
+
+  //TODO sending notification of new button status
+   if(P2P_Server_App_Context.Notification_Status){
+    APP_DBG_MSG("-- P2P APPLICATION SERVER  : INFORM CLIENT MOTOR DONE \n ");
+    APP_DBG_MSG(" \n\r");
+    P2PS_STM_App_Update_Char(P2P_NOTIFY_CHAR_UUID, (uint8_t *)&P2P_Server_App_Context.MotorStateControl.MotorState);
+   } else {
+    APP_DBG_MSG("-- P2P APPLICATION SERVER : CAN'T INFORM CLIENT -  NOTIFICATION DISABLED\n ");
+   }
+
+  return;
 }
+
+void P2PS_Send_Notification_Stopped(void) //run from sequencer
+{
+	P2P_Server_App_Context.MotorStateControl.MotorState = STOPPED;
+
+  //TODO sending notification of new button status
+   if(P2P_Server_App_Context.Notification_Status){
+    APP_DBG_MSG("-- P2P APPLICATION SERVER  : INFORM CLIENT MOTOR STOPPED \n ");
+    APP_DBG_MSG(" \n\r");
+    P2PS_STM_App_Update_Char(P2P_NOTIFY_CHAR_UUID, (uint8_t *)&P2P_Server_App_Context.MotorStateControl.MotorState);
+   } else {
+    APP_DBG_MSG("-- P2P APPLICATION SERVER : CAN'T INFORM CLIENT -  NOTIFICATION DISABLED\n ");
+   }
+
+  return;
+}
+
+void P2PS_Send_Notification_Pending(void) //run from sequencer
+{
+	P2P_Server_App_Context.MotorStateControl.MotorState = PENDING;
+
+  //TODO sending notification of new button status
+   if(P2P_Server_App_Context.Notification_Status){
+    APP_DBG_MSG("-- P2P APPLICATION SERVER  : INFORM CLIENT MOTOR PENDING \n ");
+    APP_DBG_MSG(" \n\r");
+    P2PS_STM_App_Update_Char(P2P_NOTIFY_CHAR_UUID, (uint8_t *)&P2P_Server_App_Context.MotorStateControl.MotorState);
+   } else {
+    APP_DBG_MSG("-- P2P APPLICATION SERVER : CAN'T INFORM CLIENT -  NOTIFICATION DISABLED\n ");
+   }
+
+  return;
+}
+
 
 /* USER CODE END FD_LOCAL_FUNCTIONS*/
