@@ -290,6 +290,7 @@ tBleStatus P2PS_STM_App_Update_Char(uint16_t UUID, uint8_t *pPayload)
   }
 
   return result;
-}/* end P2PS_STM_Init() */
+}
+/* end P2PS_STM_Init() */
 
 
