@@ -6,6 +6,9 @@
 #ifndef INC_ARM_UTILITIES_H_
 #define INC_ARM_UTILITIES_H_
 
+#include <stdint.h>
+
+
 /* Exported functions ---------------------------------------------*/
 uint16_t Get_Speed();
 void Set_Speed(uint32_t);

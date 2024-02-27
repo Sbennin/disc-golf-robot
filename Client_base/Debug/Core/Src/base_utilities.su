@@ -1,0 +1,6 @@
+../Core/Src/base_utilities.c:20:6:Red_On	8	static
+../Core/Src/base_utilities.c:25:6:Red_Off	8	static
+../Core/Src/base_utilities.c:30:6:Green_On	8	static
+../Core/Src/base_utilities.c:35:6:Green_Off	8	static
+../Core/Src/base_utilities.c:40:6:Blue_On	8	static
+../Core/Src/base_utilities.c:45:6:Blue_Off	8	static

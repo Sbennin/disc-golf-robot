@@ -60,7 +60,9 @@ void MX_LPUART1_UART_Init(void);
 void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN EFP */
-
+uint32_t Get_Counter(void);
+void UART_Transmit(char[50]);
+void Set_CCR(uint32_t);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

@@ -652,7 +652,20 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+uint32_t Get_Counter(void)
+{
+	return __HAL_TIM_GET_COUNTER(&htim2);
+}
 
+void UART_Transmit(char message[50])
+{
+	HAL_UART_Transmit(&huart1,(uint8_t*)message, sizeof(char)*50,10);
+}
+
+void Set_CCR(uint32_t CCR)
+{
+	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, CCR);
+}
 /* USER CODE END 4 */
 
 /**

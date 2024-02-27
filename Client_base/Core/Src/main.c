@@ -71,7 +71,8 @@ DMA_HandleTypeDef hdma_usart1_tx;
 RTC_HandleTypeDef hrtc;
 
 /* USER CODE BEGIN PV */
-
+uint8_t state;
+uint8_t state_changed;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -131,7 +132,8 @@ int main(void)
   MX_RTC_Init();
   MX_RF_Init();
   /* USER CODE BEGIN 2 */
-
+  state = 3;
+  state_changed = 1;
   /* USER CODE END 2 */
 
   /* Init code for STM32_WPAN */
@@ -145,6 +147,51 @@ int main(void)
     MX_APPE_Process();
 
     /* USER CODE BEGIN 3 */
+    if (state == 0) //motor DONE, waiting for button action
+    {
+    	if (state_changed == 1)
+    	{
+    		Blue_On();
+    		Green_Off();
+    		Red_Off();
+    		state_changed = 0;
+    	}
+    }
+    if (state == 1) //Waiting for motor pending, should be short state unless error
+    {
+    	if (state_changed == 1)
+    	{
+    		Blue_Off();
+    		Green_Off();
+    		Red_Off();
+    		state_changed = 0;
+    	}
+    }
+    if (state == 2) //Motor PENDING
+    {
+    	if (state_changed == 1)
+    	{
+    		Blue_Off();
+    		Green_On();
+    		Red_Off();
+    		state_changed = 0;
+    	}
+    }
+    if (state == 3)//Motor STOPPED
+    {
+    	if (state_changed == 1)
+    	{
+    		Blue_Off();
+    		Green_Off();
+    		Red_On();
+    		state_changed = 0;
+    	}
+    }
+    else
+    {
+    	state = 0;
+    	state_changed = 1;
+    }
   }
   /* USER CODE END 3 */
 }
@@ -485,7 +532,20 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/*
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_PIN)
+{
+	if(GPIO_PIN == B1_Pin){state = 0;}      //10
+	else if(GPIO_PIN == B2_Pin){state = 1;} //1
+	else if(GPIO_PIN == B3_Pin){state = 2;} //2
+	state_changed = 1;
+} */
 
+void SetState(uint8_t state_in)
+{
+	state = state_in;
+	state_changed = 1;
+}
 /* USER CODE END 4 */
 
 /**

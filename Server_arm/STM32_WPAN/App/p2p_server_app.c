@@ -25,6 +25,7 @@
 #include "ble.h"
 #include "p2p_server_app.h"
 #include "stm32_seq.h"
+#include "arm_utilities.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -53,19 +54,11 @@ typedef struct
 } P2P_Server_App_Context_t;
 */
 
-typedef struct
-{
-  uint8_t               Notification_Status; // used to check if P2P Server is enabled to Notify
-  P2P_GoalSpeed_t       GoalControl;
-  P2P_MotorState_t      MotorStateControl;
-  uint16_t              ConnectionHandle;
-} P2P_Server_App_Context_t;
-
-enum Motor_State {
+typedef enum {
   STOPPED,
   PENDING,
   DONE
-};
+}Motor_State;
 
 typedef struct
 {
@@ -76,6 +69,16 @@ typedef struct
 {
 	Motor_State MotorState;
 }P2P_MotorState_t;
+
+typedef struct
+{
+  uint8_t               Notification_Status; // used to check if P2P Server is enabled to Notify
+  P2P_GoalSpeed_t       GoalControl;
+  P2P_MotorState_t      MotorStateControl;
+  uint16_t              ConnectionHandle;
+} P2P_Server_App_Context_t;
+
+
 /* USER CODE END PTD */
 
 /* Private defines ------------------------------------------------------------*/

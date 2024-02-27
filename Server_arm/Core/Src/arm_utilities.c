@@ -5,6 +5,8 @@
 
 
 #include "arm_utilities.h"
+#include "main.h"
+#include "p2p_server_app.h"
 
 /* Private define ------------------------------------------------------------*/
 #define PPR 7
@@ -92,14 +94,14 @@ uint16_t Read_Speed() //rpm
 
 	uint32_t period = 100;
 	uint16_t speed = 0;
-	uint32_t start_counter = __HAL_TIM_GET_COUNTER(&htim2);
+	uint32_t start_counter = Get_Counter();
 
 	//char Test3[50];
 	//int size3 = sprintf(Test3, "start counter= %lu\r\n", start_counter);
 	//HAL_UART_Transmit(&huart1,(uint8_t*)Test3, size3,10);
 
 	HAL_Delay(period);
-	uint32_t end_counter = __HAL_TIM_GET_COUNTER(&htim2);
+	uint32_t end_counter = Get_Counter();
 
 	//char Test2[50];
 	//int size2 = sprintf(Test2, "end counter=   %lu\r\n", end_counter);
@@ -136,8 +138,8 @@ void Set_Speed(uint32_t goal) //TODO detect failure
 		int current = Get_Speed();
 
 		  char Test[50];
-		  int size = sprintf(Test, "cur speed: %d\r\nfailures: %d\r\n", current, failures);
-		  HAL_UART_Transmit(&huart1,(uint8_t*)Test, size,10);
+		  //int size = sprintf(Test, "cur speed: %d\r\nfailures: %d\r\n", current, failures);
+		  UART_Transmit(Test);
 
 		int error = goal - current;
 
@@ -172,7 +174,7 @@ void Set_Speed(uint32_t goal) //TODO detect failure
 void Update_PWM(uint32_t duty)
 {
 	uint32_t CCR = (TIM1->ARR)*(duty/100.0);
-	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, CCR);
+	Set_CCR(CCR);
 }
 
 void Red_On()

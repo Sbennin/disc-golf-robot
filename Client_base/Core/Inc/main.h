@@ -58,7 +58,7 @@ void MX_LPUART1_UART_Init(void);
 void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN EFP */
-
+void SetState(uint8_t);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

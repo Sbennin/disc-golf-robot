@@ -1,0 +1,15 @@
+../Core/Src/arm_utilities.c:28:6:Rot_CW_PWM	1
+../Core/Src/arm_utilities.c:34:6:Rot_CCW_PWM	1
+../Core/Src/arm_utilities.c:41:6:Set_CW	1
+../Core/Src/arm_utilities.c:53:6:Set_CCW	1
+../Core/Src/arm_utilities.c:66:6:Stop_Motor	1
+../Core/Src/arm_utilities.c:74:10:Get_Speed	2
+../Core/Src/arm_utilities.c:88:10:Read_Speed	3
+../Core/Src/arm_utilities.c:125:6:Set_Speed	7
+../Core/Src/arm_utilities.c:174:6:Update_PWM	1
+../Core/Src/arm_utilities.c:180:6:Red_On	1
+../Core/Src/arm_utilities.c:185:6:Red_Off	1
+../Core/Src/arm_utilities.c:190:6:Green_On	1
+../Core/Src/arm_utilities.c:195:6:Green_Off	1
+../Core/Src/arm_utilities.c:200:6:Blue_On	1
+../Core/Src/arm_utilities.c:205:6:Blue_Off	1

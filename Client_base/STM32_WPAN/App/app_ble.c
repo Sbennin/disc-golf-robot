@@ -697,7 +697,7 @@ APP_BLE_ConnStatus_t APP_BLE_Get_Client_Connection_Status(uint16_t Connection_Ha
   return APP_BLE_IDLE;
 }
 /* USER CODE BEGIN FD */
-void APP_BLE_Key_Button1_Action(void)
+void APP_BLE_Key_Button1_Action(void) //TODO button 1 pressed
 {
 #if OOB_DEMO == 0 
   P2PC_APP_SW1_Button_Action();
@@ -715,10 +715,12 @@ void APP_BLE_Key_Button1_Action(void)
 
 void APP_BLE_Key_Button2_Action(void)
 {
+	P2PC_APP_SW2_Button_Action();
 }
 
 void APP_BLE_Key_Button3_Action(void)
 {
+	P2PC_APP_SW3_Button_Action();
 }
 /* USER CODE END FD */
 /*************************************************************

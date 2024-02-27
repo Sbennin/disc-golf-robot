@@ -35,6 +35,8 @@ STM32_WPAN/App/p2p_server_app.o: ../STM32_WPAN/App/p2p_server_app.c \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rng.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rtc.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rtc_ex.h \
+ ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_tim.h \
+ ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_tim_ex.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_uart.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_uart_ex.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_system.h \
@@ -103,7 +105,8 @@ STM32_WPAN/App/p2p_server_app.o: ../STM32_WPAN/App/p2p_server_app.c \
  ../Middlewares/ST/STM32_WPAN/ble/svc/Inc/template_stm.h \
  ../Middlewares/ST/STM32_WPAN/ble/svc/Inc/svc_ctl.h \
  ../Middlewares/ST/STM32_WPAN/ble/svc/Inc/uuid.h \
- ../STM32_WPAN/App/p2p_server_app.h ../Utilities/sequencer/stm32_seq.h
+ ../STM32_WPAN/App/p2p_server_app.h ../Utilities/sequencer/stm32_seq.h \
+ ../Core/Inc/arm_utilities.h
 ../Core/Inc/main.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal.h:
 ../Core/Inc/stm32wbxx_hal_conf.h:
@@ -141,6 +144,8 @@ STM32_WPAN/App/p2p_server_app.o: ../STM32_WPAN/App/p2p_server_app.c \
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rng.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rtc.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rtc_ex.h:
+../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_tim.h:
+../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_tim_ex.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_uart.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_uart_ex.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_system.h:
@@ -216,3 +221,4 @@ STM32_WPAN/App/p2p_server_app.o: ../STM32_WPAN/App/p2p_server_app.c \
 ../Middlewares/ST/STM32_WPAN/ble/svc/Inc/uuid.h:
 ../STM32_WPAN/App/p2p_server_app.h:
 ../Utilities/sequencer/stm32_seq.h:
+../Core/Inc/arm_utilities.h:

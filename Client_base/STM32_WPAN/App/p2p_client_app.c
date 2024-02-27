@@ -46,7 +46,7 @@ typedef enum
 
 typedef struct
 {
-  uint16_t * pPayload;
+  uint8_t * pPayload; //TODO increase size?
   uint8_t     Length;
 }P2P_Client_Data_t;
 
@@ -117,11 +117,11 @@ typedef struct{
   uint8_t                                     Button1;
 }P2P_ButtonCharValue_t;
 */
-enum Motor_State {
+typedef enum {
   STOPPED,
   PENDING,
   DONE
-};
+}Motor_State;
 
 typedef struct
 {
@@ -180,7 +180,10 @@ static void Gatt_Notification(P2P_Client_App_Notification_evt_t *pNotification);
 static SVCCTL_EvtAckStatus_t Event_Handler(void *Event);
 /* USER CODE BEGIN PFP */
 static tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload); //TODO increase to 16 bit payload
-static void Button_Trigger_Received( void );
+//static void Button_Trigger_Received( void ); //TODO
+static void Button1_Trigger_Received( void );
+static void Button2_Trigger_Received( void );
+static void Button3_Trigger_Received( void );
 static void Update_Service( void );
 /* USER CODE END PFP */
 
@@ -196,7 +199,10 @@ void P2PC_APP_Init(void)
 /* USER CODE BEGIN P2PC_APP_Init_1 */
   //TODO register tasks to sequencer
   UTIL_SEQ_RegTask( 1<< CFG_TASK_SEARCH_SERVICE_ID, UTIL_SEQ_RFU, Update_Service );
-  UTIL_SEQ_RegTask( 1<< CFG_TASK_SW1_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, Button_Trigger_Received );
+  //UTIL_SEQ_RegTask( 1<< CFG_TASK_SW1_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, Button_Trigger_Received );
+  UTIL_SEQ_RegTask( 1<< CFG_TASK_SW1_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, Button1_Trigger_Received );
+  UTIL_SEQ_RegTask( 1<< CFG_TASK_SW2_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, Button2_Trigger_Received );
+  UTIL_SEQ_RegTask( 1<< CFG_TASK_SW3_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, Button3_Trigger_Received );
 
   /**
    * Initialize LedButton Service
@@ -205,10 +211,13 @@ void P2PC_APP_Init(void)
   P2P_Client_App_Context.Notification_Status=0;
   P2P_Client_App_Context.ConnectionHandle =  0x00;
 
-  P2P_Client_App_Context.LedControl.Device_Led_Selection=0x00;/* device Led */
-  P2P_Client_App_Context.LedControl.Led1=0x00; /* led OFF */
-  P2P_Client_App_Context.ButtonStatus.Device_Button_Selection=0x01;/* Device1 */
-  P2P_Client_App_Context.ButtonStatus.Button1=0x00;
+  P2P_Client_App_Context.GoalControl.GoalSpeed=0; //goal speed is 0
+  P2P_Client_App_Context.MotorStateControl.MotorState=STOPPED;
+
+  //P2P_Client_App_Context.LedControl.Device_Led_Selection=0x00;/* device Led */
+  //P2P_Client_App_Context.LedControl.Led1=0x00; /* led OFF */
+  //P2P_Client_App_Context.ButtonStatus.Device_Button_Selection=0x01;/* Device1 */
+  //P2P_Client_App_Context.ButtonStatus.Button1=0x00;
 /* USER CODE END P2PC_APP_Init_1 */
   for(index = 0; index < BLE_CFG_CLT_MAX_NBR_CB; index++)
   {
@@ -282,6 +291,20 @@ void P2PC_APP_SW1_Button_Action(void) //called from button interrupt
 {
 	//TODO run task from sequencer
   UTIL_SEQ_SetTask(1<<CFG_TASK_SW1_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
+
+}
+
+void P2PC_APP_SW2_Button_Action(void) //called from button interrupt
+{
+	//TODO run task from sequencer
+  UTIL_SEQ_SetTask(1<<CFG_TASK_SW2_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
+
+}
+
+void P2PC_APP_SW3_Button_Action(void) //called from button interrupt
+{
+	//TODO run task from sequencer
+  UTIL_SEQ_SetTask(1<<CFG_TASK_SW3_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
 
 }
 /* USER CODE END FD */
@@ -598,8 +621,31 @@ void Gatt_Notification(P2P_Client_App_Notification_evt_t *pNotification)
     case P2P_NOTIFICATION_INFO_RECEIVED_EVT:
 /* USER CODE BEGIN P2P_NOTIFICATION_INFO_RECEIVED_EVT */
     {
-      //TODO got notification from server
-    	P2P_Client_App_Context.LedControl.Device_Led_Selection=pNotification->DataTransfered.pPayload[0];
+        //TODO got notification from server
+    	P2P_Client_App_Context.MotorStateControl.MotorState=pNotification->DataTransfered.pPayload[0];
+    	switch(P2P_Client_App_Context.MotorStateControl.MotorState){
+    	case STOPPED : {
+    		SetState(3);
+    		APP_DBG_MSG(" -- P2P APPLICATION CLIENT : NOTIFICATION RECEIVED - MOTOR STOPPED \n\r");
+    		APP_DBG_MSG(" \n\r");
+    		break;
+    	}
+    	case PENDING : {
+    		SetState(2);
+    		APP_DBG_MSG(" -- P2P APPLICATION CLIENT : NOTIFICATION RECEIVED - MOTOR PENDING \n\r");
+    		APP_DBG_MSG(" \n\r");
+    		break;
+    	}
+    	case DONE : {
+    		SetState(0);
+    		APP_DBG_MSG(" -- P2P APPLICATION CLIENT : NOTIFICATION RECEIVED - MOTOR DONE \n\r");
+    		APP_DBG_MSG(" \n\r");
+    		break;
+    	}
+    	default : break;
+    	}
+
+    	/*P2P_Client_App_Context.LedControl.Device_Led_Selection=pNotification->DataTransfered.pPayload[0];
       switch(P2P_Client_App_Context.LedControl.Device_Led_Selection) {
 
         case 0x01 : {
@@ -619,7 +665,7 @@ void Gatt_Notification(P2P_Client_App_Notification_evt_t *pNotification)
           break;
         }
         default : break;
-      }
+      }*/
 
     }
 /* USER CODE END P2P_NOTIFICATION_INFO_RECEIVED_EVT */
@@ -673,6 +719,7 @@ tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload
   return ret;
 }/* end Write_Char() */
 
+/*
 void Button_Trigger_Received(void) //TODO run from sequencer, button interrupt
 {
   APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON PUSHED - WRITE TO SERVER \n ");
@@ -687,6 +734,45 @@ void Button_Trigger_Received(void) //TODO run from sequencer, button interrupt
   Write_Char( P2P_WRITE_CHAR_UUID, 0, (uint8_t *)&P2P_Client_App_Context.ButtonStatus);
 
   return;
+}
+*/
+void Button1_Trigger_Received(void)
+{
+	APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON 1 PUSHED - WRITE TO SERVER \n ");
+	APP_DBG_MSG(" \n\r");
+
+	P2P_Client_App_Context.GoalControl.GoalSpeed = 0;
+
+	Write_Char( P2P_WRITE_CHAR_UUID, 0, (uint8_t *)&P2P_Client_App_Context.GoalControl);
+	SetState(1);
+
+	return;
+}
+
+void Button2_Trigger_Received(void)
+{
+	APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON 2 PUSHED - WRITE TO SERVER \n ");
+	APP_DBG_MSG(" \n\r");
+
+	P2P_Client_App_Context.GoalControl.GoalSpeed = 300;
+
+	Write_Char( P2P_WRITE_CHAR_UUID, 0, (uint8_t *)&P2P_Client_App_Context.GoalControl);
+	SetState(1);
+
+	return;
+}
+
+void Button3_Trigger_Received(void)
+{
+	APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON 3 PUSHED - WRITE TO SERVER \n ");
+	APP_DBG_MSG(" \n\r");
+
+	P2P_Client_App_Context.GoalControl.GoalSpeed = 800;
+
+	Write_Char( P2P_WRITE_CHAR_UUID, 0, (uint8_t *)&P2P_Client_App_Context.GoalControl);
+	SetState(1);
+
+	return;
 }
 
 void Update_Service()

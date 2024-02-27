@@ -4,6 +4,7 @@
  */
 
 #include "base_utilities.h"
+#include "main.h"
 
 /* Private define ------------------------------------------------------------*/
 

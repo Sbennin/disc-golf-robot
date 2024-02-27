@@ -1,6 +1,11 @@
-../STM32_WPAN/App/p2p_server_app.c:85:6:P2PS_STM_App_Notification	11
-../STM32_WPAN/App/p2p_server_app.c:261:6:P2PS_APP_Notification	3
-../STM32_WPAN/App/p2p_server_app.c:295:6:P2PS_APP_Init	1
-../STM32_WPAN/App/p2p_server_app.c:310:6:P2PS_APP_LED_BUTTON_context_Init	1
-../STM32_WPAN/App/p2p_server_app.c:353:6:P2PS_APP_SW1_Button_Action	1
-../STM32_WPAN/App/p2p_server_app.c:367:6:P2PS_Send_Notification	3
+../STM32_WPAN/App/p2p_server_app.c:118:6:P2PS_STM_App_Notification	9
+../STM32_WPAN/App/p2p_server_app.c:209:6:P2PS_APP_Notification	3
+../STM32_WPAN/App/p2p_server_app.c:244:6:P2PS_APP_Init	1
+../STM32_WPAN/App/p2p_server_app.c:279:6:P2PS_APP_MOTOR_context_Init	1
+../STM32_WPAN/App/p2p_server_app.c:292:6:P2PS_APP_SW1_Button_Action	1
+../STM32_WPAN/App/p2p_server_app.c:300:6:Motor_Stopped_Complete	1
+../STM32_WPAN/App/p2p_server_app.c:307:6:Motor_Pending_Complete	1
+../STM32_WPAN/App/p2p_server_app.c:314:6:Motor_Done_Complete	1
+../STM32_WPAN/App/p2p_server_app.c:349:6:P2PS_Send_Notification_Done	2
+../STM32_WPAN/App/p2p_server_app.c:365:6:P2PS_Send_Notification_Stopped	2
+../STM32_WPAN/App/p2p_server_app.c:381:6:P2PS_Send_Notification_Pending	2
