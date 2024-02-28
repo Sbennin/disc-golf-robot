@@ -57,7 +57,6 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 void MX_LPUART1_UART_Init(void);
-void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN EFP */
 uint32_t Get_Counter(void);
@@ -74,16 +73,16 @@ void Set_CCR(uint32_t);
 #define SysEnable_GPIO_Port GPIOA
 #define MotorPWM_Pin GPIO_PIN_9
 #define MotorPWM_GPIO_Port GPIOA
-#define LD2_Pin GPIO_PIN_0
-#define LD2_GPIO_Port GPIOB
-#define LD3_Pin GPIO_PIN_1
-#define LD3_GPIO_Port GPIOB
+#define Green_Led_Pin GPIO_PIN_0
+#define Green_Led_GPIO_Port GPIOB
+#define Red_Led_Pin GPIO_PIN_1
+#define Red_Led_GPIO_Port GPIOB
 #define DirB_Pin GPIO_PIN_15
 #define DirB_GPIO_Port GPIOA
 #define DirA_Pin GPIO_PIN_10
 #define DirA_GPIO_Port GPIOC
-#define LD1_Pin GPIO_PIN_5
-#define LD1_GPIO_Port GPIOB
+#define Blue_Led_Pin GPIO_PIN_5
+#define Blue_Led_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
