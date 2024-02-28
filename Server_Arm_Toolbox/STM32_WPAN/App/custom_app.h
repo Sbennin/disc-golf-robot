@@ -46,7 +46,12 @@ typedef struct
   uint16_t                                 ConnectionHandle;
 } Custom_App_ConnHandle_Not_evt_t;
 /* USER CODE BEGIN ET */
-
+typedef enum
+{
+	STOPPED,
+	PENDING,
+	DONE
+}Motor_State_t;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -68,7 +73,9 @@ typedef struct
 void Custom_APP_Init(void);
 void Custom_APP_Notification(Custom_App_ConnHandle_Not_evt_t *pNotification);
 /* USER CODE BEGIN EF */
-
+void P2PS_APP_B1_Button_Action(void);
+void P2PS_APP_B2_Button_Action(void);
+void P2PS_APP_B3_Button_Action(void);
 /* USER CODE END EF */
 
 #ifdef __cplusplus

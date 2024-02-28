@@ -117,7 +117,7 @@ void MX_APPE_Init(void)
   HW_TS_Init(hw_ts_InitMode_Full, &hrtc); /**< Initialize the TimerServer */
 
 /* USER CODE BEGIN APPE_Init_1 */
-
+  APPD_Init();
 /* USER CODE END APPE_Init_1 */
   appe_Tl_Init();	/* Initialize all transport layers */
 
@@ -594,5 +594,22 @@ void shci_cmd_resp_wait(uint32_t timeout)
 }
 
 /* USER CODE BEGIN FD_WRAP_FUNCTIONS */
-
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  switch (GPIO_Pin)
+  {
+    case B1_Pin:
+      APP_BLE_Key_Button1_Action();
+      break;
+    case B2_Pin:
+        APP_BLE_Key_Button2_Action();
+        break;
+    case B3_Pin:
+        APP_BLE_Key_Button3_Action();
+        break;
+    default:
+      break;
+  }
+  return;
+}
 /* USER CODE END FD_WRAP_FUNCTIONS */

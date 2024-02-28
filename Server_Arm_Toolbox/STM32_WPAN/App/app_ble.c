@@ -1174,7 +1174,20 @@ static void Connection_Interval_Update_Req(void)
 #endif /* L2CAP_REQUEST_NEW_CONN_PARAM != 0 */
 
 /* USER CODE BEGIN FD_SPECIFIC_FUNCTIONS */
+void APP_BLE_Key_Button1_Action(void)
+{
+  P2PS_APP_B1_Button_Action();
+}
 
+void APP_BLE_Key_Button2_Action(void)
+{
+  P2PS_APP_B2_Button_Action();
+}
+
+void APP_BLE_Key_Button3_Action(void)
+{
+  P2PS_APP_B3_Button_Action();
+}
 /* USER CODE END FD_SPECIFIC_FUNCTIONS */
 /*************************************************************
  *
