@@ -11,7 +11,7 @@
 
 /* Exported functions ---------------------------------------------*/
 uint16_t Get_Speed();
-void Set_Speed(uint32_t);
+void Set_Speed(uint16_t);
 void Stop_Motor();
 void Set_CW();
 void Set_CCW();

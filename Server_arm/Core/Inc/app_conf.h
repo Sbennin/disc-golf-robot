@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2020-2021 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -41,7 +41,7 @@
 /**
  * Define Advertising parameters
  */
-#define CFG_ADV_BD_ADDRESS                (0x7257acd87a6c)
+#define CFG_ADV_BD_ADDRESS                (0x11aabbccddee)
 
 /**
  * Define BD_ADDR type: define proper address. Can only be GAP_PUBLIC_ADDR (0x00) or GAP_STATIC_RANDOM_ADDR (0x01)
@@ -62,9 +62,9 @@
 #define CFG_BLE_ADDRESS_TYPE              GAP_PUBLIC_ADDR
 
 #define CFG_FAST_CONN_ADV_INTERVAL_MIN    (0x0080)      /**< 80ms */
-#define CFG_FAST_CONN_ADV_INTERVAL_MAX    (0xa0)      /**< 100ms */
+#define CFG_FAST_CONN_ADV_INTERVAL_MAX    (0x00A0)      /**< 100ms */
 #define CFG_LP_CONN_ADV_INTERVAL_MIN      (0x640)     /**< 1s */
-#define CFG_LP_CONN_ADV_INTERVAL_MAX      (0xfa0)     /**< 2.5s */
+#define CFG_LP_CONN_ADV_INTERVAL_MAX      (0xFA0)     /**< 2.5s */
 #define ADV_TYPE                          ADV_IND
 #define BLE_ADDR_TYPE                     GAP_PUBLIC_ADDR
 #define ADV_FILTER                        NO_WHITE_LIST_USE
@@ -155,6 +155,7 @@
 #define CFG_USE_SMPS    0
 
 /* USER CODE BEGIN Generic_Parameters */
+
 /* USER CODE END Generic_Parameters */
 
 /**< specific parameters */
@@ -175,7 +176,7 @@
 #define CONN_P(x) ((int)((x)/1.25f))
 
   /*  L2CAP Connection Update request parameters used for test only with smart Phone */
-#define L2CAP_REQUEST_NEW_CONN_PARAM             1
+#define L2CAP_REQUEST_NEW_CONN_PARAM             0
 
 #define L2CAP_INTERVAL_MIN              CONN_P(1000) /* 1s */
 #define L2CAP_INTERVAL_MAX              CONN_P(1000) /* 1s */
@@ -350,9 +351,9 @@
 
 #define CFG_BLE_MAX_COC_INITIATOR_NBR   (32)
 
-#define CFG_BLE_MIN_TX_POWER            (-40)
+#define CFG_BLE_MIN_TX_POWER            (0)
 
-#define CFG_BLE_MAX_TX_POWER            (6)
+#define CFG_BLE_MAX_TX_POWER            (0)
 
 /**
  * BLE Rx model configuration flags to be configured with:
@@ -442,7 +443,7 @@
  * Select UART interfaces
  */
 #define CFG_DEBUG_TRACE_UART    hw_uart1
-#define CFG_CONSOLE_MENU        hw_lpuart1
+#define CFG_CONSOLE_MENU        0
 /******************************************************************************
  * USB interface
  ******************************************************************************/
@@ -471,7 +472,7 @@
  *  When set to 1, the low power mode is enable
  *  When set to 0, the device stays in RUN mode
  */
-#define CFG_LPM_SUPPORTED    1
+#define CFG_LPM_SUPPORTED    0
 
 /******************************************************************************
  * RTC interface
@@ -574,7 +575,7 @@ typedef enum
  * This shall be set to 0 in a final product
  *
  */
-#define CFG_HW_RESET_BY_FW         1
+#define CFG_HW_RESET_BY_FW         0
 
 /**
  * keep debugger enabled while in any low power mode when set to 1
@@ -646,12 +647,7 @@ typedef enum
 #define MAX_DBG_TRACE_MSG_SIZE   1024
 
 /* USER CODE BEGIN Defines */
-#define CFG_LED_SUPPORTED         1
-#define CFG_BUTTON_SUPPORTED      1
 
-#define PUSH_BUTTON_SW1_EXTI_IRQHandler     EXTI4_IRQHandler
-#define PUSH_BUTTON_SW2_EXTI_IRQHandler     EXTI0_IRQHandler
-#define PUSH_BUTTON_SW3_EXTI_IRQHandler     EXTI1_IRQHandler
 /* USER CODE END Defines */
 
 /******************************************************************************
@@ -674,9 +670,9 @@ typedef enum
 #endif
   CFG_TASK_HCI_ASYNCH_EVT_ID,
   /* USER CODE BEGIN CFG_Task_Id_With_HCI_Cmd_t */
-  CFG_TASK_SW1_BUTTON_PUSHED_ID,
-  CFG_TASK_SW2_BUTTON_PUSHED_ID,
-  CFG_TASK_SW3_BUTTON_PUSHED_ID,
+  CFG_TASK_B1_BUTTON_PUSHED_ID,
+  CFG_TASK_B2_BUTTON_PUSHED_ID,
+  CFG_TASK_B3_BUTTON_PUSHED_ID,
   CFG_TASK_MOTOR_STOPPED_ID,
   CFG_TASK_MOTOR_PENDING_ID,
   CFG_TASK_MOTOR_DONE_ID,

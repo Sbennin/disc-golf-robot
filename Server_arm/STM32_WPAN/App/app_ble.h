@@ -1,13 +1,13 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    app_ble.h
+  * @file    App/app_ble.h
   * @author  MCD Application Team
   * @brief   Header for ble application
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019-2021 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -77,7 +77,6 @@ void APP_BLE_Key_Button3_Action(void);
 void APP_BLE_Key_Motor_Stopped_Action(void);
 void APP_BLE_Key_Motor_Pending_Action(void);
 void APP_BLE_Key_Motor_Done_Action(void);
-
 /* USER CODE END EF */
 
 #ifdef __cplusplus

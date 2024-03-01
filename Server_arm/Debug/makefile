@@ -44,34 +44,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Server_arm
+BUILD_ARTIFACT_NAME := Server_Arm
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Server_arm.elf \
+Server_Arm.elf \
 
 MAP_FILES += \
-Server_arm.map \
+Server_Arm.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Server_arm.list \
+Server_Arm.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Server_arm.elf secondary-outputs
+main-build: Server_Arm.elf secondary-outputs
 
 # Tool invocations
-Server_arm.elf Server_arm.map: $(OBJS) $(USER_OBJS) C:\Users\rache\OneDrive\Documents\School\4B\capstone\disc-golf-robot\Server_arm\STM32WB55RGVX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Server_arm.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\rache\OneDrive\Documents\School\4B\capstone\disc-golf-robot\Server_arm\STM32WB55RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Server_arm.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Server_Arm.elf Server_Arm.map: $(OBJS) $(USER_OBJS) C:\Users\rache\OneDrive\Documents\School\4B\capstone\disc-golf-robot\Server_Arm\STM32WB55RGVX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Server_Arm.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\rache\OneDrive\Documents\School\4B\capstone\disc-golf-robot\Server_Arm\STM32WB55RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Server_Arm.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -80,14 +80,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Server_arm.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Server_arm.list"
+Server_Arm.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Server_Arm.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) Server_arm.elf Server_arm.list Server_arm.map default.size.stdout
+	-$(RM) Server_Arm.elf Server_Arm.list Server_Arm.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

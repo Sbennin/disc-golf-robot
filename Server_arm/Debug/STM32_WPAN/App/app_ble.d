@@ -23,6 +23,9 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_gpio_ex.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_hsem.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_ipcc.h \
+ ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_pcd.h \
+ ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_usb.h \
+ ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_pcd_ex.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_pwr.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_pwr.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_exti.h \
@@ -32,7 +35,6 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_bus.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rcc_ex.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_crs.h \
- ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rng.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rtc.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rtc_ex.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_tim.h \
@@ -56,7 +58,6 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_rtc.h \
  ../Middlewares/ST/STM32_WPAN/ble/core/ble_bufsize.h \
  ../Core/Inc/app_entry.h ../Core/Inc/app_common.h \
- ../Core/Inc/stm32wbxx_nucleo.h ../Core/Inc/stm32wbxx_nucleo_errno.h \
  ../Core/Inc/app_common.h \
  ../Middlewares/ST/STM32_WPAN/utilities/dbg_trace.h \
  ../Middlewares/ST/STM32_WPAN/ble/ble.h ../STM32_WPAN/App/ble_conf.h \
@@ -115,7 +116,7 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
  ../Utilities/lpm/tiny_lpm/stm32_lpm.h \
  ../Middlewares/ST/STM32_WPAN/utilities/otp.h \
  ../Middlewares/ST/STM32_WPAN/utilities/utilities_common.h \
- ../STM32_WPAN/App/p2p_server_app.h ../Core/Inc/arm_utilities.h
+ ../STM32_WPAN/App/custom_app.h
 ../Core/Inc/main.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal.h:
 ../Core/Inc/stm32wbxx_hal_conf.h:
@@ -141,6 +142,9 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_gpio_ex.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_hsem.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_ipcc.h:
+../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_pcd.h:
+../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_usb.h:
+../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_pcd_ex.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_pwr.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_pwr.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_exti.h:
@@ -150,7 +154,6 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_bus.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rcc_ex.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_crs.h:
-../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rng.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rtc.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rtc_ex.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_tim.h:
@@ -176,8 +179,6 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
 ../Middlewares/ST/STM32_WPAN/ble/core/ble_bufsize.h:
 ../Core/Inc/app_entry.h:
 ../Core/Inc/app_common.h:
-../Core/Inc/stm32wbxx_nucleo.h:
-../Core/Inc/stm32wbxx_nucleo_errno.h:
 ../Core/Inc/app_common.h:
 ../Middlewares/ST/STM32_WPAN/utilities/dbg_trace.h:
 ../Middlewares/ST/STM32_WPAN/ble/ble.h:
@@ -238,5 +239,4 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
 ../Utilities/lpm/tiny_lpm/stm32_lpm.h:
 ../Middlewares/ST/STM32_WPAN/utilities/otp.h:
 ../Middlewares/ST/STM32_WPAN/utilities/utilities_common.h:
-../STM32_WPAN/App/p2p_server_app.h:
-../Core/Inc/arm_utilities.h:
+../STM32_WPAN/App/custom_app.h:
