@@ -69,10 +69,10 @@ void Set_CCR(uint32_t);
 #define ENC_A_GPIO_Port GPIOA
 #define ENC_B_Pin GPIO_PIN_1
 #define ENC_B_GPIO_Port GPIOA
+#define MOTOR_PWM_Pin GPIO_PIN_6
+#define MOTOR_PWM_GPIO_Port GPIOA
 #define SYS_ENABLE_Pin GPIO_PIN_8
 #define SYS_ENABLE_GPIO_Port GPIOA
-#define MOTOR_SPEED_Pin GPIO_PIN_9
-#define MOTOR_SPEED_GPIO_Port GPIOA
 #define B1_Pin GPIO_PIN_4
 #define B1_GPIO_Port GPIOC
 #define B1_EXTI_IRQn EXTI4_IRQn

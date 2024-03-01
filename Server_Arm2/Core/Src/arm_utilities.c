@@ -44,26 +44,26 @@ void Rot_CCW_PWM(uint32_t duty)
 
 void Set_CW()
 {
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(SYS_ENABLE_GPIO_Port, SYS_ENABLE_Pin, GPIO_PIN_RESET);
 
 	Update_PWM(0);
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(DIR_A_GPIO_Port, DIR_A_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(DIR_B_GPIO_Port, DIR_B_Pin, GPIO_PIN_SET);
 
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(SYS_ENABLE_GPIO_Port, SYS_ENABLE_Pin, GPIO_PIN_SET);
 	HAL_Delay(500); //so motor doesn't jerk
 }
 
 void Set_CCW()
 {
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(SYS_ENABLE_GPIO_Port, SYS_ENABLE_Pin, GPIO_PIN_RESET);
 
 	Update_PWM(0);
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(DIR_A_GPIO_Port, DIR_A_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(DIR_B_GPIO_Port, DIR_B_Pin, GPIO_PIN_RESET);
 
 
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(SYS_ENABLE_GPIO_Port, SYS_ENABLE_Pin, GPIO_PIN_SET);
 	HAL_Delay(500);
 }
 
@@ -79,7 +79,7 @@ uint16_t Get_Speed() // does not look at direction
 {
 	uint32_t total = 0;
 	uint16_t avg = 0;
-	uint8_t readings = 4;
+	uint8_t readings = 3;
 	for (int i = 0; i < readings; i++)
 	{
 		total += Read_Speed();
@@ -97,7 +97,7 @@ uint16_t Read_Speed() //rpm
 	//uint8_t Test[] = "Starting speed reading\r\n";
 	//HAL_UART_Transmit(&huart1,Test, sizeof(Test),10);
 
-	uint32_t period = 100;
+	uint32_t period = 50;
 	uint16_t speed = 0;
 	uint32_t start_counter = Get_Counter();
 
@@ -111,6 +111,8 @@ uint16_t Read_Speed() //rpm
 	//char Test2[50];
 	//int size2 = sprintf(Test2, "end counter=   %lu\r\n", end_counter);
 	//HAL_UART_Transmit(&huart1,(uint8_t*)Test2, size2,10);
+
+	//APP_DBG_MSG("\r\n\r** start: %lu, end: %lu\n", start_counter, end_counter);
 
 	if (start_counter == end_counter)
 	{
@@ -129,6 +131,7 @@ uint16_t Read_Speed() //rpm
 
 void Set_Speed(uint16_t goal) //TODO detect failure
 {
+	Set_CW();
 	float Kp = 0.03;
 	float Ki = 0.04;
 	int period = 100;
@@ -144,7 +147,7 @@ void Set_Speed(uint16_t goal) //TODO detect failure
 	{
 		uint16_t current = Get_Speed();
 
-		APP_DBG_MSG("\r\n\r** Current Speed: %d \n", current);
+		//APP_DBG_MSG("\r\n\r** Current Speed: %d \n", current);
 
 		  //char Test[50];
 		  //int size = sprintf(Test, "cur speed: %d\r\nfailures: %d\r\n", current, failures);
@@ -155,6 +158,8 @@ void Set_Speed(uint16_t goal) //TODO detect failure
 		int P = error*Kp;
 		I = I + error*Ki;
 		int duty = P + I;
+
+		APP_DBG_MSG("\r\n\r** Current Speed: %d, unsaturated duty: %d \n", current, duty);
 		if (duty < 0)
 		{
 			duty = 0;
@@ -183,8 +188,9 @@ void Set_Speed(uint16_t goal) //TODO detect failure
 void Update_PWM(uint32_t duty)
 {
 	//APP_DBG_MSG("\r\n\r** in Update_PWM, duty: %lu\n", duty);
-	uint32_t CCR = (TIM1->ARR)*(duty/100.0);
+	uint32_t CCR = (TIM16->ARR)*(duty/100.0);
 	//APP_DBG_MSG("\r\n\r** in Update_PWM, CCR: %lu\n", CCR);
+	//APP_DBG_MSG("\r\n\r** CCR: %lu \n", CCR);
 	Set_CCR(CCR);
 }
 
@@ -205,31 +211,31 @@ void Motor_Done_Complete()
 
 void Red_On()
 {
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(Red_Led_GPIO_Port, Red_Led_Pin, GPIO_PIN_SET);
 }
 
 void Red_Off()
 {
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Red_Led_GPIO_Port, Red_Led_Pin, GPIO_PIN_RESET);
 }
 
 void Green_On()
 {
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(Green_Led_GPIO_Port, Green_Led_Pin, GPIO_PIN_SET);
 }
 
 void Green_Off()
 {
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Green_Led_GPIO_Port, Green_Led_Pin, GPIO_PIN_RESET);
 }
 
 void Blue_On()
 {
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(Blue_Led_GPIO_Port, Blue_Led_Pin, GPIO_PIN_SET);
 }
 
 void Blue_Off()
 {
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Blue_Led_GPIO_Port, Blue_Led_Pin, GPIO_PIN_RESET);
 }
 
