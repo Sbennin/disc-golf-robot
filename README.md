@@ -6,8 +6,10 @@ Client writing to the server: goal speed, uint16_t\
 Server notifying the client: motor state, enum {stopped, pending, done}
 
 ## Server-arm
+Connect to the server board using a client device such as the STM32 BLE Toolbox mobile app or the client board. Send a speed to the server in hexidecimal.\
 Most of the bluetooth code that will be modified is in Server_arm/STM32_WPAN/App/p2p_server_app.c.\
-Other functions can be placed in Server_arm/Core/Src/arm_utilities.c
+Other functions can be placed in Server_arm/Core/Src/arm_utilities.c\
+Any gets or sets to certain system perhiperials such as timers should be done in main.c
 
 ## Server-arm-toolbox
 Runs a simulation of the arm motor. You can connect to the board using the STM32 BLE Toolbox mobile app and directly control it.
