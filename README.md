@@ -16,8 +16,8 @@ Runs a simulation of the arm motor. You can connect to the board using the STM32
 Press a button on the board to send to the client the motor state {STOPPED, PENDING, DONE}. From the app, send a 16 bit hex integer as the desired motor speed to the 
 board. LEDs will light up depending on the range. (0-300, Blue), (301-600, Green), (600+, Red). 
 
-##big_motor
+## big_motor
 For testing the big motor in isolation.
 
-#small_motor
+## small_motor
 For testing the small motor in isolation.
