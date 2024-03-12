@@ -21,3 +21,6 @@ For testing the big motor in isolation.
 
 ## small_motor
 For testing the small motor in isolation.
+
+## solenoid
+For testing the solenoid in isolation. Both standard GPIO output and PWM signals can be used.
