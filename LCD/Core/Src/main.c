@@ -137,7 +137,8 @@ int main(void)
 	  else if (state == 2){
 		  if (state_changed == 1)
 		  {
-			  Black_LCD();
+			  Init_LCD();
+			  //Black_LCD();
 			  state_changed = 0;
 		  }
 
