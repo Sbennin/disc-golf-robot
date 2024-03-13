@@ -1,0 +1,2 @@
+../Core/Src/solenoid.c:9:6:Solenoid_Up	1
+../Core/Src/solenoid.c:14:6:Solenoid_Down	1

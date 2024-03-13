@@ -1,0 +1,2 @@
+../Core/Src/solenoid.c:9:6:Solenoid_Up	8	static
+../Core/Src/solenoid.c:14:6:Solenoid_Down	8	static
