@@ -1,0 +1,16 @@
+../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_rcc.h:1679:22:LL_RCC_LSE_SetDriveCapability	1
+../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_bus.h:539:22:LL_AHB2_GRP1_EnableClock	1
+../Core/Src/main.c:76:5:main	7
+../Core/Src/main.c:162:6:SystemClock_Config	3
+../Core/Src/main.c:228:6:PeriphCommonClock_Config	2
+../Core/Src/main.c:252:13:MX_USART1_UART_Init	5
+../Core/Src/main.c:300:13:MX_USB_PCD_Init	2
+../Core/Src/main.c:333:13:MX_GPIO_Init	1
+../Core/Src/main.c:392:6:Red_On	1
+../Core/Src/main.c:397:6:Red_Off	1
+../Core/Src/main.c:402:6:Green_On	1
+../Core/Src/main.c:407:6:Green_Off	1
+../Core/Src/main.c:412:6:Blue_On	1
+../Core/Src/main.c:417:6:Blue_Off	1
+../Core/Src/main.c:422:6:HAL_GPIO_EXTI_Callback	4
+../Core/Src/main.c:435:6:Error_Handler	1
