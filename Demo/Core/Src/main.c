@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ARM_SPEED 30
+#define ARM_SPEED 350
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -139,6 +139,7 @@ int main(void)
 		  Blue_Off();
 		  Green_Off();
 		  Red_On();
+		  HAL_Delay(100);
 	  }
 	  else if (state == 2){
 		  //motor is up to speed
@@ -158,11 +159,11 @@ int main(void)
 			  state_changed = 0;
 		  }
 
-		  if (Arm_Launched_In_Position(ARM_SPEED) == 1)
+		  /*if (Arm_Launched_In_Position(ARM_SPEED) == 1)
 		  {
 			  state = 4;
 			  state_changed = 1;
-		  }
+		  }*/
 
 		  Blue_Off();
 		  Green_On();
@@ -196,6 +197,20 @@ int main(void)
 		  Blue_On();
 		  Green_Off();
 		  Red_On();
+	  }
+	  else if (state == 6){
+		  //launch disc
+		  if (state_changed == 1)
+		  {
+			  Launch_Disc_State(ARM_SPEED);
+			  state = 4;
+			  state_changed = 1;
+			  //state_changed = 0;
+		  }
+
+		  Blue_On();
+		  Green_On();
+		  Red_Off();
 	  }
 	  else{
 		  state = 0;
@@ -516,7 +531,19 @@ void B1_Pressed()
 
 void B2_Pressed()
 {
-
+	if(state == 3)
+	{
+		state = 6;
+		state_changed = 1;
+		/*
+		Blue_Off();
+		Red_Off();
+		Green_Off();
+		Launch_Disc_State(ARM_SPEED);
+		state = 4;
+		state_changed = 1;
+		*/
+	}
 }
 
 void B3_Pressed()
@@ -527,8 +554,8 @@ void B3_Pressed()
 
 void Motor_Transmit(char tx_buff[], uint8_t size)
 {
-	//HAL_UART_Transmit(&hlpuart1, (uint8_t*)tx_buff, size, 10);
-	HAL_UART_Transmit(&huart1, (uint8_t*)tx_buff, size, 10);
+	HAL_UART_Transmit(&hlpuart1, (uint8_t*)tx_buff, size, 10);
+	//HAL_UART_Transmit(&huart1, (uint8_t*)tx_buff, size, 10);
 }
 
 HAL_StatusTypeDef Motor_Receive(uint8_t rx_buff[])
@@ -538,7 +565,7 @@ HAL_StatusTypeDef Motor_Receive(uint8_t rx_buff[])
 
 	uint8_t rx_char[1];
 	uint8_t i = 0;
-	HAL_StatusTypeDef status = HAL_UART_Receive(&huart1, rx_char, 1, 10000);
+	HAL_StatusTypeDef status = HAL_UART_Receive(&hlpuart1, rx_char, 1, 10000);
 	if (status != HAL_OK)
 	{
 		return 0;
@@ -547,7 +574,7 @@ HAL_StatusTypeDef Motor_Receive(uint8_t rx_buff[])
 	i++;
 	while (rx_char[0] != '\r')
 	{
-		status = HAL_UART_Receive(&huart1, rx_char, 1, 10000);
+		status = HAL_UART_Receive(&hlpuart1, rx_char, 1, 10000);
 		if (status != HAL_OK)
 		{
 			return 0;

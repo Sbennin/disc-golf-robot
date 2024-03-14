@@ -7,6 +7,7 @@
 #include "communication_utilities.h"
 #include "hall_sensor.h"
 #include "solenoid.h"
+#include "utilities.h"
 #include <stdlib.h>
 
 #define BIG_MOTOR_GEAR_RATIO 4
@@ -65,7 +66,7 @@ uint8_t Arm_Launched_In_Position(uint16_t set_arm_speed)
 	uint16_t set_motor_speed = Calc_Big_Motor_Speed(set_arm_speed);
 	uint16_t launch_delay = Calc_Launch_Delay(set_motor_speed);
 
-	if (Hall_Sensor_Triggered == 1)
+	if (Hall_Sensor_Triggered() == 1)
 	{
 		HAL_Delay(launch_delay);
 		Solenoid_Up();
@@ -77,6 +78,31 @@ uint8_t Arm_Launched_In_Position(uint16_t set_arm_speed)
 	{
 		return 0;
 	}
+}
+
+void Launch_Disc_State(uint16_t set_arm_speed)
+{
+	uint16_t set_motor_speed = Calc_Big_Motor_Speed(set_arm_speed);
+	uint16_t launch_delay = Calc_Launch_Delay(set_motor_speed);
+
+	HAL_Delay(launch_delay);
+	//Blue_On();
+	//HAL_Delay(500);
+	//Blue_Off();
+	//Green_On();
+	Solenoid_Up();
+
+	//Blue_Off();
+	//Green_On();
+
+	//HAL_Delay(500);
+
+	//Green_Off();
+	//Red_On();
+	//HAL_Delay(launch_delay*LAUNCH_DELAY_DIV); //wait for full rev to confirm launched
+	HAL_Delay(500);
+	//Red_Off();
+	Solenoid_Down();
 }
 
 uint16_t Calc_Big_Motor_Speed(uint16_t arm_speed)
@@ -94,7 +120,7 @@ void Motor_Init()
 {
 	Digital_Mode();
 	HAL_Delay(COMMAND_DELAY);
-	Set_Clockwise_Direction();
+	Set_Counterclockwise_Direction();
 	HAL_Delay(COMMAND_DELAY);
 	Coast();
 	HAL_Delay(COMMAND_DELAY);

@@ -1,7 +1,8 @@
-../Core/Src/state_commands.c:22:6:Arm_Spin_State	1
-../Core/Src/state_commands.c:34:9:Arm_Done_Spinning	3
-../Core/Src/state_commands.c:49:9:Arm_Stopped	2
-../Core/Src/state_commands.c:63:9:Arm_Launched_In_Position	2
-../Core/Src/state_commands.c:82:10:Calc_Big_Motor_Speed	1
-../Core/Src/state_commands.c:87:10:Calc_Launch_Delay	1
-../Core/Src/state_commands.c:93:6:Motor_Init	1
+../Core/Src/state_commands.c:23:6:Arm_Spin_State	1
+../Core/Src/state_commands.c:35:9:Arm_Done_Spinning	3
+../Core/Src/state_commands.c:50:9:Arm_Stopped	2
+../Core/Src/state_commands.c:64:9:Arm_Launched_In_Position	2
+../Core/Src/state_commands.c:83:6:Launch_Disc_State	1
+../Core/Src/state_commands.c:108:10:Calc_Big_Motor_Speed	1
+../Core/Src/state_commands.c:113:10:Calc_Launch_Delay	1
+../Core/Src/state_commands.c:119:6:Motor_Init	1

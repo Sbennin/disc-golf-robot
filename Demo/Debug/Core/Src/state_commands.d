@@ -37,7 +37,7 @@ Core/Src/state_commands.o: ../Core/Src/state_commands.c \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_uart_ex.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_system.h \
  ../Core/Inc/communication_utilities.h ../Core/Inc/main.h \
- ../Core/Inc/hall_sensor.h ../Core/Inc/solenoid.h
+ ../Core/Inc/hall_sensor.h ../Core/Inc/solenoid.h ../Core/Inc/utilities.h
 ../Core/Inc/main.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal.h:
 ../Core/Inc/stm32wbxx_hal_conf.h:
@@ -80,3 +80,4 @@ Core/Src/state_commands.o: ../Core/Src/state_commands.c \
 ../Core/Inc/main.h:
 ../Core/Inc/hall_sensor.h:
 ../Core/Inc/solenoid.h:
+../Core/Inc/utilities.h:
