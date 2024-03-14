@@ -118,6 +118,8 @@ void MX_APPE_Init(void)
 
 /* USER CODE BEGIN APPE_Init_1 */
 //TODO
+  APPD_Init();
+  UTIL_LPM_SetOffMode(1 << CFG_LPM_APP, UTIL_LPM_DISABLE); //maybe not needed?
 /* USER CODE END APPE_Init_1 */
   appe_Tl_Init();	/* Initialize all transport layers */
 
@@ -594,5 +596,26 @@ void shci_cmd_resp_wait(uint32_t timeout)
 }
 
 /* USER CODE BEGIN FD_WRAP_FUNCTIONS */
+void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin ) //TODO
+{
+  switch (GPIO_Pin)
+  {
+    case B1_Pin:
+     APP_BLE_Key_Button1_Action();
+      break;
 
+    case B2_Pin:
+      APP_BLE_Key_Button2_Action();
+      break;
+
+    case B3_Pin:
+      APP_BLE_Key_Button3_Action();
+      break;
+
+    default:
+      break;
+
+  }
+  return;
+}
 /* USER CODE END FD_WRAP_FUNCTIONS */

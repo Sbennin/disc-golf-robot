@@ -175,7 +175,7 @@ typedef struct
 #define BD_ADDR_SIZE_LOCAL    6
 
 /* USER CODE BEGIN PD */
-
+#define LED_ON_TIMEOUT            (0.005*1000*1000/CFG_TS_TICK_VAL) /**< 5ms */ //TODO maybe not needed
 /* USER CODE END PD */
 
 /* Private macros ------------------------------------------------------------*/
@@ -418,6 +418,8 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
                   && gap_evt_proc_complete->Status == 0x00)
               {
                 /* USER CODE BEGIN GAP_GENERAL_DISCOVERY_PROC */
+            	  // TODO blue off
+            	  //connected to server
 
                 /* USER CODE END GAP_GENERAL_DISCOVERY_PROC */
                 APP_DBG_MSG("-- GAP GENERAL DISCOVERY PROCEDURE_COMPLETED\n\r");
@@ -467,7 +469,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
               {
                 APP_DBG_MSG("  Fail   : aci_l2cap_connection_parameter_update_resp command, result: 0x%x \n\r", ret);
                 /* USER CODE BEGIN BLE_STATUS_SUCCESS */
-
+                //TODO connection failed red on
                 /* USER CODE END BLE_STATUS_SUCCESS */
               }
               else
@@ -490,7 +492,8 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
           case ACI_HAL_END_OF_RADIO_ACTIVITY_VSEVT_CODE:
             {
               /* USER CODE BEGIN RADIO_ACTIVITY_EVENT */
-
+            	//TODO green on
+            	HW_TS_Start(BleApplicationContext.SwitchOffGPIO_timer_Id, (uint32_t)LED_ON_TIMEOUT); //might not be nessessary
               /* USER CODE END RADIO_ACTIVITY_EVENT */
             }
             break; /* ACI_HAL_END_OF_RADIO_ACTIVITY_VSEVT_CODE */
@@ -693,7 +696,29 @@ APP_BLE_ConnStatus_t APP_BLE_Get_Client_Connection_Status(uint16_t Connection_Ha
   return APP_BLE_IDLE;
 }
 /* USER CODE BEGIN FD */
+//TODO
+void APP_BLE_Key_Button1_Action(void)
+{
+  if(P2P_Client_APP_Get_State () != APP_BLE_CONNECTED_CLIENT) //server not connected, start scanning
+  {
+	  Blue_On();
+    UTIL_SEQ_SetTask(1 << CFG_TASK_START_SCAN_ID, CFG_SCH_PRIO_0);
+  }
+  else
+  {
+    P2PC_APP_B1_Button_Action();
+  }
+}
 
+void APP_BLE_Key_Button2_Action(void)
+{
+	P2PC_APP_B2_Button_Action();
+}
+
+void APP_BLE_Key_Button3_Action(void)
+{
+	P2PC_APP_B3_Button_Action();
+}
 /* USER CODE END FD */
 /*************************************************************
  *
@@ -934,7 +959,7 @@ static void Scan_Request(void)
   if (BleApplicationContext.Device_Connection_Status != APP_BLE_CONNECTED_CLIENT)
   {
     /* USER CODE BEGIN APP_BLE_CONNECTED_CLIENT */
-
+	  //TODO blue on
     /* USER CODE END APP_BLE_CONNECTED_CLIENT */
     result = aci_gap_start_general_discovery_proc(SCAN_P, SCAN_L, CFG_BLE_ADDRESS_TYPE, 1);
     if (result == BLE_STATUS_SUCCESS)
@@ -947,7 +972,7 @@ static void Scan_Request(void)
     else
     {
     /* USER CODE BEGIN BLE_SCAN_FAILED */
-
+    	//TODO red on
     /* USER CODE END BLE_SCAN_FAILED */
       APP_DBG_MSG("-- BLE_App_Start_Limited_Disc_Req, Failed \r\n\r");
     }
@@ -983,7 +1008,7 @@ static void Connect_Request(void)
     if (result == BLE_STATUS_SUCCESS)
     {
       /* USER CODE BEGIN BLE_CONNECT_SUCCESS */
-
+    	Blue_Off();
       /* USER CODE END BLE_CONNECT_SUCCESS */
       BleApplicationContext.Device_Connection_Status = APP_BLE_LP_CONNECTING;
 
@@ -991,7 +1016,8 @@ static void Connect_Request(void)
     else
     {
       /* USER CODE BEGIN BLE_CONNECT_FAILED */
-
+    	//TODO red on
+    	Red_On();
       /* USER CODE END BLE_CONNECT_FAILED */
       BleApplicationContext.Device_Connection_Status = APP_BLE_IDLE;
 
@@ -1006,6 +1032,7 @@ static void Connect_Request(void)
 static void Switch_OFF_GPIO()
 {
   /* USER CODE BEGIN Switch_OFF_GPIO */
+	//TODO green off
 
   /* USER CODE END Switch_OFF_GPIO */
 }
