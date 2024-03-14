@@ -173,7 +173,8 @@ int main(void)
 		  //after launching, slow motor
 		  if (state_changed == 1)
 		  {
-			  Coast();
+			  Hard_Brake();
+			  //Coast();
 			  state_changed = 0;
 		  }
 

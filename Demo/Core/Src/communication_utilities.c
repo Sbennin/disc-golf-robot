@@ -402,7 +402,7 @@ void Coast()
 
 void Hard_Brake()
 {
-	char buff[]={'@', MOTOR_ADDRESS, ',', '\r'};
+	char buff[]={'@', MOTOR_ADDRESS, '.', '\r'};
 	Motor_Transmit(buff, sizeof(buff));
 }
 
