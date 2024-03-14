@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ARM_SPEED 350
+#define ARM_SPEED 250
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
