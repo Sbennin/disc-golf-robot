@@ -159,11 +159,11 @@ int main(void)
 			  state_changed = 0;
 		  }
 
-		  /*if (Arm_Launched_In_Position(ARM_SPEED) == 1)
+		  if (Arm_Launched_In_Position(ARM_SPEED) == 1)
 		  {
 			  state = 4;
 			  state_changed = 1;
-		  }*/
+		  }
 
 		  Blue_Off();
 		  Green_On();
@@ -534,8 +534,8 @@ void B2_Pressed()
 {
 	if(state == 3)
 	{
-		state = 6;
-		state_changed = 1;
+		//state = 6;
+		//state_changed = 1;
 		/*
 		Blue_Off();
 		Red_Off();
