@@ -60,8 +60,8 @@ all: main-build
 main-build: LCD.elf secondary-outputs
 
 # Tool invocations
-LCD.elf LCD.map: $(OBJS) $(USER_OBJS) C:\Users\rache\OneDrive\Documents\School\4B\capstone\disc-golf-robot\LCD\STM32WB55RGVX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "LCD.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\rache\OneDrive\Documents\School\4B\capstone\disc-golf-robot\LCD\STM32WB55RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LCD.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+LCD.elf LCD.map: $(OBJS) $(USER_OBJS) C:\src\disc-golf-robot\LCD\STM32WB55RGVX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "LCD.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\src\disc-golf-robot\LCD\STM32WB55RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LCD.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

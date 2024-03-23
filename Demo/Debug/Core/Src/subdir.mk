@@ -8,6 +8,7 @@ C_SRCS += \
 ../Core/Src/communication_utilities.c \
 ../Core/Src/hall_sensor.c \
 ../Core/Src/main.c \
+../Core/Src/sevseg_display.c \
 ../Core/Src/solenoid.c \
 ../Core/Src/state_commands.c \
 ../Core/Src/stm32wbxx_hal_msp.c \
@@ -21,6 +22,7 @@ OBJS += \
 ./Core/Src/communication_utilities.o \
 ./Core/Src/hall_sensor.o \
 ./Core/Src/main.o \
+./Core/Src/sevseg_display.o \
 ./Core/Src/solenoid.o \
 ./Core/Src/state_commands.o \
 ./Core/Src/stm32wbxx_hal_msp.o \
@@ -34,6 +36,7 @@ C_DEPS += \
 ./Core/Src/communication_utilities.d \
 ./Core/Src/hall_sensor.d \
 ./Core/Src/main.d \
+./Core/Src/sevseg_display.d \
 ./Core/Src/solenoid.d \
 ./Core/Src/state_commands.d \
 ./Core/Src/stm32wbxx_hal_msp.d \
@@ -51,7 +54,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/communication_utilities.cyclo ./Core/Src/communication_utilities.d ./Core/Src/communication_utilities.o ./Core/Src/communication_utilities.su ./Core/Src/hall_sensor.cyclo ./Core/Src/hall_sensor.d ./Core/Src/hall_sensor.o ./Core/Src/hall_sensor.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/solenoid.cyclo ./Core/Src/solenoid.d ./Core/Src/solenoid.o ./Core/Src/solenoid.su ./Core/Src/state_commands.cyclo ./Core/Src/state_commands.d ./Core/Src/state_commands.o ./Core/Src/state_commands.su ./Core/Src/stm32wbxx_hal_msp.cyclo ./Core/Src/stm32wbxx_hal_msp.d ./Core/Src/stm32wbxx_hal_msp.o ./Core/Src/stm32wbxx_hal_msp.su ./Core/Src/stm32wbxx_it.cyclo ./Core/Src/stm32wbxx_it.d ./Core/Src/stm32wbxx_it.o ./Core/Src/stm32wbxx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32wbxx.cyclo ./Core/Src/system_stm32wbxx.d ./Core/Src/system_stm32wbxx.o ./Core/Src/system_stm32wbxx.su ./Core/Src/utilities.cyclo ./Core/Src/utilities.d ./Core/Src/utilities.o ./Core/Src/utilities.su
+	-$(RM) ./Core/Src/communication_utilities.cyclo ./Core/Src/communication_utilities.d ./Core/Src/communication_utilities.o ./Core/Src/communication_utilities.su ./Core/Src/hall_sensor.cyclo ./Core/Src/hall_sensor.d ./Core/Src/hall_sensor.o ./Core/Src/hall_sensor.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/sevseg_display.cyclo ./Core/Src/sevseg_display.d ./Core/Src/sevseg_display.o ./Core/Src/sevseg_display.su ./Core/Src/solenoid.cyclo ./Core/Src/solenoid.d ./Core/Src/solenoid.o ./Core/Src/solenoid.su ./Core/Src/state_commands.cyclo ./Core/Src/state_commands.d ./Core/Src/state_commands.o ./Core/Src/state_commands.su ./Core/Src/stm32wbxx_hal_msp.cyclo ./Core/Src/stm32wbxx_hal_msp.d ./Core/Src/stm32wbxx_hal_msp.o ./Core/Src/stm32wbxx_hal_msp.su ./Core/Src/stm32wbxx_it.cyclo ./Core/Src/stm32wbxx_it.d ./Core/Src/stm32wbxx_it.o ./Core/Src/stm32wbxx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32wbxx.cyclo ./Core/Src/system_stm32wbxx.d ./Core/Src/system_stm32wbxx.o ./Core/Src/system_stm32wbxx.su ./Core/Src/utilities.cyclo ./Core/Src/utilities.d ./Core/Src/utilities.o ./Core/Src/utilities.su
 
 .PHONY: clean-Core-2f-Src
 

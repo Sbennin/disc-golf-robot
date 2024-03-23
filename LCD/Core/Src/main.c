@@ -119,6 +119,9 @@ int main(void)
 			  state_changed = 0;
 		  }
 
+
+		  HAL_Delay(100);
+
 		  Blue_On();
 		  Green_Off();
 		  Red_Off();
@@ -126,9 +129,11 @@ int main(void)
 	  else if (state == 1){
 		  if (state_changed == 1)
 		  {
-			  Clear_LCD();
 			  state_changed = 0;
 		  }
+
+		  Clear_LCD();
+		  HAL_Delay(200);
 
 		  Blue_Off();
 		  Green_On();

@@ -24,6 +24,7 @@
 #include "communication_utilities.h"
 #include "utilities.h"
 #include "state_commands.h"
+#include "sevseg_display.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,6 +51,9 @@ PCD_HandleTypeDef hpcd_USB_FS;
 /* USER CODE BEGIN PV */
 uint32_t state;
 uint32_t state_changed;
+
+uint32_t counter = 777;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -60,7 +64,7 @@ static void MX_LPUART1_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USB_PCD_Init(void);
 /* USER CODE BEGIN PFP */
-
+void SevenSegment_Update(uint8_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -105,20 +109,28 @@ int main(void)
   /* USER CODE BEGIN 2 */
   state = 0;
   state_changed = 1;
+  SevenSegment_Off();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  SevenSegment_UpdateAllDigits(counter); // Has some ms of HAL_Delay() inside this function
+
 	  if (state == 0){
+		  counter++;
+		  if (counter >= 1000){
+		  	  counter = 0;
+		  }
+
 		  //nothing running, waiting for input
 		  if (state_changed == 1)
 		  {
 			  state_changed = 0;
 		  }
 
-		  Blue_Off();
+		  Blue_On();
 		  Green_Off();
 		  Red_Off();
 	  }
@@ -459,10 +471,20 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Solenoid_GPIO_Port, Solenoid_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, Solenoid_Pin|digit1_Pin|digit2_Pin|digit3_Pin
+                          |digit4_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, segmentG_Pin|segmentA_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LD2_Pin|LD3_Pin|LD1_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, segmentF_Pin|segmentE_Pin|segmentD_Pin|segmentC_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(segmentB_GPIO_Port, segmentB_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : Solenoid_Pin */
   GPIO_InitStruct.Pin = Solenoid_Pin;
@@ -470,6 +492,15 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(Solenoid_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : segmentG_Pin digit1_Pin digit2_Pin digit3_Pin
+                           digit4_Pin segmentA_Pin */
+  GPIO_InitStruct.Pin = segmentG_Pin|digit1_Pin|digit2_Pin|digit3_Pin
+                          |digit4_Pin|segmentA_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : HALL_SENSOR_Pin */
   GPIO_InitStruct.Pin = HALL_SENSOR_Pin;
@@ -483,12 +514,21 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LD2_Pin LD3_Pin LD1_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin|LD3_Pin|LD1_Pin;
+  /*Configure GPIO pins : LD2_Pin LD3_Pin segmentF_Pin segmentE_Pin
+                           segmentD_Pin segmentC_Pin LD1_Pin */
+  GPIO_InitStruct.Pin = LD2_Pin|LD3_Pin|segmentF_Pin|segmentE_Pin
+                          |segmentD_Pin|segmentC_Pin|LD1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : segmentB_Pin */
+  GPIO_InitStruct.Pin = segmentB_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(segmentB_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : B2_Pin B3_Pin */
   GPIO_InitStruct.Pin = B2_Pin|B3_Pin;
@@ -592,6 +632,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_PIN)
 	else if(GPIO_PIN == B2_Pin){B2_Pressed();}
 	else if(GPIO_PIN == B3_Pin){B3_Pressed();}
 }
+
 /* USER CODE END 4 */
 
 /**
