@@ -70,7 +70,7 @@ uint8_t Arm_Launched_In_Position(uint16_t set_arm_speed)
 	{
 		HAL_Delay(launch_delay);
 		Solenoid_Up();
-		HAL_Delay(launch_delay*LAUNCH_DELAY_DIV); //wait for full rev to confirm launched
+		HAL_Delay(1.0/set_arm_speed*60.0*1000.0); //wait for full revolution to confirm launched
 		Solenoid_Down();
 		return 1;
 	}
