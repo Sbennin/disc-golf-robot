@@ -6,6 +6,53 @@
 //#include "LCD_utilities.h"
 #include "main.h"
 
+const uint8_t PIXEL_WIDTH = 128;
+const uint16_t MAX_DISP_LENGTH = 128*4;
+
+//8 pixels high
+typedef struct{
+	unsigned char ASCII;
+	uint8_t width;
+	unsigned char data[5];
+}letter_small_t;
+
+//TODO define numbers
+const letter_small_t LETTER_SPACE_SMALL = {0, 1, {0x00,0x00, 0x00, 0x00,0x00}};
+const letter_small_t WORD_SPACE_SMALL = {' ', 3, {0x00, 0x00, 0x00,0x00, 0x00}};
+
+const letter_small_t A_SMALL = {'A', 4, {0x3C, 0x50, 0X50, 0X3C, 0x00}};
+const letter_small_t B_SMALL = {'B', 4, {0x7C, 0x54, 0X54, 0X28, 0x00}};
+const letter_small_t C_SMALL = {'C', 4, {0x38, 0x44, 0X44, 0X28, 0x00}};
+const letter_small_t D_SMALL = {'D', 4, {0x7C, 0x44, 0X44, 0X38, 0x00}};
+const letter_small_t E_SMALL = {'E', 4, {0x7c, 0x54, 0x54, 0x44, 0x00}};
+const letter_small_t F_SMALL = {'F', 4, {0x7c, 0x50, 0x50, 0x40, 0x00}};
+const letter_small_t G_SMALL = {'G', 4, {0x38, 0x44, 0x54, 0x18, 0x00}};
+const letter_small_t H_SMALL = {'H', 4, {0x7c, 0x10, 0x10, 0x7c, 0x00}};
+const letter_small_t I_SMALL = {'I', 3, {0x44, 0x7c, 0x44, 0x00, 0x00}};
+const letter_small_t J_SMALL = {'J', 4, {0x08, 0x04, 0x04, 0x78, 0x00}};
+const letter_small_t K_SMALL = {'K', 4, {0x7c, 0x10, 0x28, 0x44, 0x00}};
+const letter_small_t L_SMALL = {'L', 4, {0x7c, 0x04, 0x04, 0x04, 0x00}};
+const letter_small_t M_SMALL = {'M', 5, {0x7c, 0x20, 0x10, 0x20, 0x7c}};
+const letter_small_t N_SMALL = {'N', 4, {0x7c, 0x20, 0x10, 0x7c, 0x00}};
+const letter_small_t O_SMALL = {'O', 4, {0x38, 0x44, 0x44, 0x38, 0x00}};
+const letter_small_t P_SMALL = {'P', 4, {0x7c, 0x50, 0x50, 0x20, 0x00}};
+const letter_small_t Q_SMALL = {'Q', 4, {0x38, 0x44, 0x48, 0x34, 0x00}};
+const letter_small_t R_SMALL = {'R', 4, {0x7c, 0x50, 0x58, 0x24, 0x00}};
+const letter_small_t S_SMALL = {'S', 4, {0x24, 0x54, 0x54, 0x48, 0x00}};
+const letter_small_t T_SMALL = {'T', 5, {0x40, 0x40, 0x7c, 0x40, 0x40}};
+const letter_small_t U_SMALL = {'U', 4, {0x78, 0x04, 0x04, 0x78, 0x00}};
+const letter_small_t V_SMALL = {'V', 5, {0x60, 0x18, 0x04, 0x18, 0x60}};
+const letter_small_t W_SMALL = {'W', 5, {0x7c, 0x08, 0x10, 0x08, 0x7c}};
+const letter_small_t X_SMALL = {'X', 4, {0x6c, 0x10, 0x10, 0x6c, 0x00}};
+const letter_small_t Y_SMALL = {'Y', 5, {0x60, 0x10, 0x1c, 0x10, 0x60}};
+const letter_small_t Z_SMALL = {'Z', 4, {0x4c, 0x54, 0x64, 0x44, 0x00}};
+
+const letter_small_t letter_small_table [] = {
+		WORD_SPACE_SMALL, A_SMALL, B_SMALL, C_SMALL, D_SMALL, E_SMALL, F_SMALL, G_SMALL,
+		H_SMALL, I_SMALL, J_SMALL, K_SMALL, L_SMALL, M_SMALL, N_SMALL, O_SMALL, P_SMALL,
+		Q_SMALL, R_SMALL, S_SMALL, T_SMALL, U_SMALL, V_SMALL, W_SMALL, X_SMALL, Y_SMALL,
+		Z_SMALL};
+
 void comm_write(unsigned char command);
 void data_write(unsigned char data);
 void comm_ADC_Select();
@@ -21,6 +68,7 @@ void comm_Display_Start_Addr_0();
 void comm_Col_Upper_Addr();
 void comm_Col_Lower_Addr();
 void comm_Page_Addr(unsigned char addr);
+uint8_t Find_Char_Index(unsigned char, uint8_t);
 
 
 void Init_LCD()
@@ -135,6 +183,77 @@ void Black_LCD()
     }
     comm_Display_On();
     HAL_Delay(5);
+}
+
+void Disp_Text_Small(unsigned char* text, uint8_t length)
+{
+	//TODO split lines by word instead of letter
+	//TODO detect message is too long
+	//TODO send data directly to LCD rather then calling Disp_Pic, faster
+	if (length == 0){return;}
+
+	unsigned char Disp [512];
+	uint16_t Disp_index = 0;
+	uint8_t remaining_width = PIXEL_WIDTH;
+
+	for (int i = 0; i < length; i++)
+	{
+		unsigned char new_letter = *text;
+		uint8_t table_index = Find_Char_Index(new_letter, 1);
+		if (table_index == 255)
+		{
+			continue; //skip past this letter
+		}
+		letter_small_t table_letter = letter_small_table[table_index];
+
+		if(remaining_width < table_letter.width + 1) //need to go to next line, fill in extra spaces
+		{
+			for (int j = 0; j < remaining_width; j++)
+			{
+				Disp[Disp_index] = LETTER_SPACE_SMALL.data[0];
+				Disp_index++;
+			}
+			remaining_width = PIXEL_WIDTH;
+		}
+
+		for (int j = 0; j < table_letter.width; j++)
+		{
+			if (i != 0 && remaining_width < PIXEL_WIDTH) //fill in space between letters
+			{
+				Disp[Disp_index] = LETTER_SPACE_SMALL.data[0];
+				Disp_index++;
+			}
+
+			Disp[Disp_index] = table_letter.data[j];
+			Disp_index++;
+			remaining_width--;
+		}
+	}
+
+	for (int i = Disp_index; i < MAX_DISP_LENGTH; i++) //fill in rest of disp
+	{
+		Disp[i] = LETTER_SPACE_SMALL.data[0];
+		Disp_index++;
+	}
+
+	Disp_Pic(Disp);
+}
+
+uint8_t Find_Char_Index(unsigned char lookup_letter, uint8_t small)
+{
+	if (small == 1)
+	{
+		for (int i = 0; i < 27; i++)
+		{
+			unsigned char table_letter = letter_small_table[i].ASCII;
+			if (table_letter == lookup_letter)
+			{
+				return i;
+			}
+		}
+		return 255; //not in table
+	}
+	return 255;
 }
 
 void data_write(unsigned char data) //Data Output Serial Interface

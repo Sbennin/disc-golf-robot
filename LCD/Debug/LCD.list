@@ -25,23 +25,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  10 .comment      00000043  00000000  00000000  00020244  2**0
                   CONTENTS, READONLY
- 11 .debug_info   00013b26  00000000  00000000  00020287  2**0
+ 11 .debug_info   00013f32  00000000  00000000  00020287  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .debug_abbrev 00002abb  00000000  00000000  00033dad  2**0
+ 12 .debug_abbrev 00002b2d  00000000  00000000  000341b9  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_aranges 00001518  00000000  00000000  00036868  2**3
+ 13 .debug_aranges 00001528  00000000  00000000  00036ce8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_rnglists 00001009  00000000  00000000  00037d80  2**0
+ 14 .debug_rnglists 00001016  00000000  00000000  00038210  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_macro  00021295  00000000  00000000  00038d89  2**0
+ 15 .debug_macro  00021299  00000000  00000000  00039226  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_line   000128eb  00000000  00000000  0005a01e  2**0
+ 16 .debug_line   00012a3b  00000000  00000000  0005a4bf  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_str    000d5088  00000000  00000000  0006c909  2**0
+ 17 .debug_str    000d523c  00000000  00000000  0006cefa  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_frame  00005798  00000000  00000000  00141994  2**2
+ 18 .debug_frame  000057e8  00000000  00000000  00142138  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_line_str 00000077  00000000  00000000  0014712c  2**0
+ 19 .debug_line_str 00000077  00000000  00000000  00147920  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -348,8 +348,8 @@ Disassembly of section .text:
  8000476:	bf00      	nop
 
 08000478 <Init_LCD>:
-void comm_Col_Lower_Addr();
 void comm_Page_Addr(unsigned char addr);
+uint8_t Find_Char_Index(unsigned char, uint8_t);
 
 
 void Init_LCD()
@@ -580,8 +580,8 @@ void Clear_LCD()
  80005ca:	bd80      	pop	{r7, pc}
 
 080005cc <data_write>:
-    comm_Display_On();
-    HAL_Delay(5);
+	}
+	return 255;
 }
 
 void data_write(unsigned char data) //Data Output Serial Interface
