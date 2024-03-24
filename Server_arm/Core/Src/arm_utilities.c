@@ -186,12 +186,14 @@ void Set_Speed(uint16_t goal) //TODO detect failure
 	} while(stable < stable_threshold && failures < failure_threshold);
 	Motor_Done_Complete();
 #else
-	int duty = 100*(goal/1200);
+	Set_CW();
+	int duty = 100*(goal/1200.0);
 	if (duty > 100)
 	{
 		duty = 100;
 	}
 	Update_PWM(duty);
+	Motor_Done_Complete();
 #endif
 }
 
