@@ -9,5 +9,6 @@
 #define INC_HALL_SENSOR_H_
 
 uint8_t Hall_Sensor_Triggered();
+uint32_t Read_Motor_Speed();
 
 #endif /* INC_HALL_SENSOR_H_ */

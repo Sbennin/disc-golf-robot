@@ -16,3 +16,8 @@ uint8_t Hall_Sensor_Triggered()
 		return 0;
 	}
 }
+
+uint32_t Read_Motor_Speed()
+{
+	//TODO implement
+}

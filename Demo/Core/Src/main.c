@@ -35,6 +35,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define ARM_SPEED 250
+#define ANAHEIM 0
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -64,7 +65,7 @@ static void MX_LPUART1_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USB_PCD_Init(void);
 /* USER CODE BEGIN PFP */
-void SevenSegment_Update(uint8_t);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -116,19 +117,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  SevenSegment_UpdateAllDigits(counter); // Has some ms of HAL_Delay() inside this function
-
 	  if (state == 0){
-		  counter++;
-		  if (counter >= 1000){
-		  	  counter = 0;
-		  }
-
 		  //nothing running, waiting for input
+		  // NEW MOTOR: running big motor up until satisfied by pressing button
 		  if (state_changed == 1)
 		  {
 			  state_changed = 0;
 		  }
+#if (ANAHEIM == 0)
+		  uint32_t motor_speed = Read_Motor_Speed();
+		  SevenSegment_UpdateAllDigits(motor_speed);
+#endif
 
 		  Blue_On();
 		  Green_Off();
@@ -136,29 +135,49 @@ int main(void)
 	  }
 	  else if (state == 1){
 		  //start motor spinning
+		  // NEW MOTOR: ready to launch, waiting for right position
 		  if (state_changed == 1)
 		  {
-			  Arm_Spin_State(ARM_SPEED);
+#if (ANAHEIM == 1)
+				  Arm_Spin_State(ARM_SPEED);
+#endif
 			  state_changed = 0;
 		  }
 
+#if (ANAHEIM == 1)
 		  if (Arm_Done_Spinning(ARM_SPEED) == 1)
 		  {
 			  state = 2;
 			  state_changed = 1;
 		  }
+#else
+		  if (Arm_Launched_In_Position((uint16_t)Read_Motor_Speed()) == 1)
+		  {
+			  state = 2;
+			  state_changed = 1;
+		  }
+#endif
 
 		  Blue_Off();
 		  Green_Off();
 		  Red_On();
-		  HAL_Delay(100);
+		  //HAL_Delay(100);
 	  }
 	  else if (state == 2){
 		  //motor is up to speed
+		  // NEW MOTOR: after launching, slowing down motor
 		  if (state_changed == 1)
 		  {
 			  state_changed = 0;
 		  }
+#if (ANAHEIM == 0)
+		  uint32_t motor_speed = Read_Motor_Speed();
+		  SevenSegment_UpdateAllDigits(motor_speed);
+		  if (motor_speed < 5){
+			  state = 3;
+			  state_changed = 4;
+		  }
+#endif
 
 		  Blue_Off();
 		  Green_On();
@@ -166,16 +185,19 @@ int main(void)
 	  }
 	  else if (state == 3){
 		  //ready to launch, waiting for right position
+		  // NEW MOTOR: motor stopped, disc launched, press button to restart
 		  if (state_changed == 1)
 		  {
 			  state_changed = 0;
 		  }
 
+#if (ANAHEIM == 1)
 		  if (Arm_Launched_In_Position(ARM_SPEED) == 1)
 		  {
 			  state = 4;
 			  state_changed = 1;
 		  }
+#endif
 
 		  Blue_Off();
 		  Green_On();
@@ -212,7 +234,7 @@ int main(void)
 		  Red_On();
 	  }
 	  else if (state == 6){
-		  //launch disc
+		  // manually launch disc
 		  if (state_changed == 1)
 		  {
 			  Launch_Disc_State(ARM_SPEED);
@@ -553,6 +575,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void B1_Pressed()
 {
+#if (ANAHEIM == 1)
 	if (state == 0)
 	{
 		state = 1;
@@ -568,6 +591,16 @@ void B1_Pressed()
 		state = 0;
 		state_changed = 1;
 	}
+#else
+	if (state == 0){
+		state = 1;
+		state_changed = 1;
+	}
+	else if (state == 3){
+		state = 0;
+		state_changed = 1;
+	}
+#endif
 }
 
 void B2_Pressed()
@@ -589,8 +622,10 @@ void B2_Pressed()
 
 void B3_Pressed()
 {
+#if (ANAHEIM == 1)
 	state = 4;
 	state_changed = 1;
+#endif
 }
 
 void Motor_Transmit(char tx_buff[], uint8_t size)
