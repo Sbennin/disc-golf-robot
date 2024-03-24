@@ -1,1 +1,2 @@
 ../Core/Src/hall_sensor.c:8:9:Hall_Sensor_Triggered	2
+../Core/Src/hall_sensor.c:20:10:Read_Motor_Speed	1

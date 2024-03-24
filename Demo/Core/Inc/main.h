@@ -76,6 +76,7 @@ HAL_StatusTypeDef Motor_Receive(uint8_t[]);
 #define digit4_GPIO_Port GPIOA
 #define HALL_SENSOR_Pin GPIO_PIN_9
 #define HALL_SENSOR_GPIO_Port GPIOA
+#define HALL_SENSOR_EXTI_IRQn EXTI9_5_IRQn
 #define B1_Pin GPIO_PIN_4
 #define B1_GPIO_Port GPIOC
 #define B1_EXTI_IRQn EXTI4_IRQn

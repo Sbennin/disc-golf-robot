@@ -53,7 +53,8 @@ PCD_HandleTypeDef hpcd_USB_FS;
 uint32_t state;
 uint32_t state_changed;
 
-uint32_t counter = 777;
+uint32_t current_rpm = 0;
+uint32_t hs_prev_tick = 0;
 
 /* USER CODE END PV */
 
@@ -117,6 +118,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  SevenSegment_UpdateAllDigits(current_rpm);
+
 	  if (state == 0){
 		  //nothing running, waiting for input
 		  // NEW MOTOR: running big motor up until satisfied by pressing button
@@ -124,10 +127,6 @@ int main(void)
 		  {
 			  state_changed = 0;
 		  }
-#if (ANAHEIM == 0)
-		  uint32_t motor_speed = Read_Motor_Speed();
-		  SevenSegment_UpdateAllDigits(motor_speed);
-#endif
 
 		  Blue_On();
 		  Green_Off();
@@ -151,7 +150,7 @@ int main(void)
 			  state_changed = 1;
 		  }
 #else
-		  if (Arm_Launched_In_Position((uint16_t)Read_Motor_Speed()) == 1)
+		  if (Arm_Launched_In_Position((uint16_t)current_rpm) == 1)
 		  {
 			  state = 2;
 			  state_changed = 1;
@@ -526,7 +525,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : HALL_SENSOR_Pin */
   GPIO_InitStruct.Pin = HALL_SENSOR_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(HALL_SENSOR_GPIO_Port, &GPIO_InitStruct);
 
@@ -567,6 +566,9 @@ static void MX_GPIO_Init(void)
 
   HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
@@ -663,7 +665,13 @@ HAL_StatusTypeDef Motor_Receive(uint8_t rx_buff[])
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_PIN)
 {
-	if(GPIO_PIN == B1_Pin){B1_Pressed();}
+	if (GPIO_PIN == HALL_SENSOR_Pin){
+		uint32_t curr_tick = HAL_GetTick();
+		uint32_t time_since_last = curr_tick - hs_prev_tick;
+		current_rpm = (uint32_t)(1.0 / time_since_last * 60.0 * 1000.0);
+		hs_prev_tick = curr_tick;
+	}
+	else if(GPIO_PIN == B1_Pin){B1_Pressed();}
 	else if(GPIO_PIN == B2_Pin){B2_Pressed();}
 	else if(GPIO_PIN == B3_Pin){B3_Pressed();}
 }
