@@ -32,7 +32,7 @@
 #include "app_ble.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "utilities.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -156,7 +156,7 @@ static SVCCTL_EvtAckStatus_t Event_Handler(void *Event);
 static tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload);
 static void Button_Trigger_Received( void );
 static void Update_Service( void );
-void Speed_To_Payload(uint16_t, uint8_t*);
+void Speed_To_Payload(uint16_t, uint8_t[2]);
 /* USER CODE END PFP */
 
 /* Functions Definition ------------------------------------------------------*/
@@ -585,15 +585,15 @@ void Gatt_Notification(P2P_Client_App_Notification_evt_t *pNotification)
 
     	if (P2P_Client_App_Context.State_Status == STOPPED)
     	{
-    		LED_num(4);
+    		LED_Num(4);
     	}
     	else if (P2P_Client_App_Context.State_Status == PENDING)
     	{
-    		LED_num(2);
+    		LED_Num(2);
     	}
     	else if (P2P_Client_App_Context.State_Status == DONE)
     	{
-    		LED_num(1);
+    		LED_Num(1);
     	}
     }
 /* USER CODE END P2P_NOTIFICATION_INFO_RECEIVED_EVT */
@@ -651,7 +651,7 @@ void Button_Trigger_Received(void)
   APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON PUSHED - WRITE TO SERVER \n ");
   APP_DBG_MSG(" \n\r");
 
-  uint8_t* payload;
+  uint8_t payload [2];
   Speed_To_Payload(P2P_Client_App_Context.small_motor_goal_speed, payload);
 
   Write_Char( P2P_WRITE_CHAR_UUID, 0, payload);
@@ -717,9 +717,11 @@ void Update_Service()
   return;
 }
 
-void Speed_To_Payload(uint16_t speed, uint8_t* payload)
+void Speed_To_Payload(uint16_t speed, uint8_t payload[2])
 {
+	uint8_t test1 = (speed & 0xFF00) >> 8;
+	uint8_t test2 = (speed & 0x00FF);
 	payload[0] = (speed & 0xFF00) >> 8; //most significant bits
-	payload[0] = (speed & 0x00FF); //least significant bits
+	payload[1] = (speed & 0x00FF); //least significant bits
 }
 /* USER CODE END LF */

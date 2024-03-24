@@ -1,0 +1,12 @@
+../STM32_WPAN/App/p2p_client_app.c:168:6:P2PC_APP_Init	16	static
+../STM32_WPAN/App/p2p_client_app.c:199:6:P2PC_APP_Notification	24	static
+../STM32_WPAN/App/p2p_client_app.c:252:6:P2PC_APP_B1_Button_Action	8	static
+../STM32_WPAN/App/p2p_client_app.c:258:6:P2PC_APP_B2_Button_Action	8	static
+../STM32_WPAN/App/p2p_client_app.c:264:6:P2PC_APP_B3_Button_Action	8	static
+../STM32_WPAN/App/p2p_client_app.c:282:30:Event_Handler	88	static
+../STM32_WPAN/App/p2p_client_app.c:569:6:Gatt_Notification	16	static
+../STM32_WPAN/App/p2p_client_app.c:614:9:P2P_Client_APP_Get_State	4	static
+../STM32_WPAN/App/p2p_client_app.c:623:12:Write_Char	24	static
+../STM32_WPAN/App/p2p_client_app.c:649:6:Button_Trigger_Received	16	static
+../STM32_WPAN/App/p2p_client_app.c:662:6:Update_Service	16	static
+../STM32_WPAN/App/p2p_client_app.c:720:6:Speed_To_Payload	24	static

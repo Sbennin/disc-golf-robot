@@ -38,7 +38,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "utilities.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -419,6 +419,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
               {
                 /* USER CODE BEGIN GAP_GENERAL_DISCOVERY_PROC */
             	  // TODO blue off
+            	  Blue_Off();
             	  //connected to server
 
                 /* USER CODE END GAP_GENERAL_DISCOVERY_PROC */
@@ -470,6 +471,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
                 APP_DBG_MSG("  Fail   : aci_l2cap_connection_parameter_update_resp command, result: 0x%x \n\r", ret);
                 /* USER CODE BEGIN BLE_STATUS_SUCCESS */
                 //TODO connection failed red on
+                Red_On();
                 /* USER CODE END BLE_STATUS_SUCCESS */
               }
               else
@@ -493,7 +495,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
             {
               /* USER CODE BEGIN RADIO_ACTIVITY_EVENT */
             	//TODO green on
-            	HW_TS_Start(BleApplicationContext.SwitchOffGPIO_timer_Id, (uint32_t)LED_ON_TIMEOUT); //might not be nessessary
+            	//HW_TS_Start(BleApplicationContext.SwitchOffGPIO_timer_Id, (uint32_t)LED_ON_TIMEOUT); //might not be nessessary
               /* USER CODE END RADIO_ACTIVITY_EVENT */
             }
             break; /* ACI_HAL_END_OF_RADIO_ACTIVITY_VSEVT_CODE */
@@ -617,7 +619,27 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
 
                     case AD_TYPE_MANUFACTURER_SPECIFIC_DATA: /* Manufacturer Specific */
                       /* USER CODE BEGIN AD_TYPE_MANUFACTURER_SPECIFIC_DATA */
+                        if (adlength >= 4 && adv_report_data[k + 2] == 0x01)
+                        { /* ST VERSION ID 01 */
+                          APP_DBG_MSG("--- ST MANUFACTURER ID --- \n\r");
+                          switch (adv_report_data[k + 3])
+                          {   /* Demo ID */
+                             case CFG_DEV_ID_P2P_SERVER1: /* End Device 1 */
+                             APP_DBG_MSG("-- SERVER DETECTED -- VIA MAN ID\n\r");
+                             BleApplicationContext.DeviceServerFound = 0x01;
+                             SERVER_REMOTE_ADDR_TYPE = le_advertising_event->Advertising_Report[0].Address_Type;
+                             SERVER_REMOTE_BDADDR[0] = le_advertising_event->Advertising_Report[0].Address[0];
+                             SERVER_REMOTE_BDADDR[1] = le_advertising_event->Advertising_Report[0].Address[1];
+                             SERVER_REMOTE_BDADDR[2] = le_advertising_event->Advertising_Report[0].Address[2];
+                             SERVER_REMOTE_BDADDR[3] = le_advertising_event->Advertising_Report[0].Address[3];
+                             SERVER_REMOTE_BDADDR[4] = le_advertising_event->Advertising_Report[0].Address[4];
+                             SERVER_REMOTE_BDADDR[5] = le_advertising_event->Advertising_Report[0].Address[5];
+                             break;
 
+                            default:
+                              break;
+                          }
+                        }
                       /* USER CODE END AD_TYPE_MANUFACTURER_SPECIFIC_DATA */
                       if (adlength >= 7 && adv_report_data[k + 2] == 0x01)
                       { /* ST VERSION ID 01 */
@@ -701,7 +723,7 @@ void APP_BLE_Key_Button1_Action(void)
 {
   if(P2P_Client_APP_Get_State () != APP_BLE_CONNECTED_CLIENT) //server not connected, start scanning
   {
-	  Blue_On();
+	  //Blue_On();
     UTIL_SEQ_SetTask(1 << CFG_TASK_START_SCAN_ID, CFG_SCH_PRIO_0);
   }
   else
@@ -960,6 +982,7 @@ static void Scan_Request(void)
   {
     /* USER CODE BEGIN APP_BLE_CONNECTED_CLIENT */
 	  //TODO blue on
+	  Blue_On();
     /* USER CODE END APP_BLE_CONNECTED_CLIENT */
     result = aci_gap_start_general_discovery_proc(SCAN_P, SCAN_L, CFG_BLE_ADDRESS_TYPE, 1);
     if (result == BLE_STATUS_SUCCESS)
@@ -973,6 +996,7 @@ static void Scan_Request(void)
     {
     /* USER CODE BEGIN BLE_SCAN_FAILED */
     	//TODO red on
+    	Red_On();
     /* USER CODE END BLE_SCAN_FAILED */
       APP_DBG_MSG("-- BLE_App_Start_Limited_Disc_Req, Failed \r\n\r");
     }
