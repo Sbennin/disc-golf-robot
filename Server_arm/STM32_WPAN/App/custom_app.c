@@ -26,7 +26,6 @@
 #include "custom_app.h"
 #include "custom_stm.h"
 #include "stm32_seq.h"
-#include "arm_utilities.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
