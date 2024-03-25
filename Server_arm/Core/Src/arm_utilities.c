@@ -12,6 +12,7 @@
 /* Private define ------------------------------------------------------------*/
 #define PPR 7
 #define GEAR_RATIO 3.7
+#define PI_USED 0
 
 /* Private macro -------------------------------------------------------------*/
 
@@ -131,6 +132,7 @@ uint16_t Read_Speed() //rpm
 
 void Set_Speed(uint16_t goal) //TODO detect failure
 {
+#if (PI_USED == 1)
 	Set_CW();
 	float Kp = 0.03;
 	float Ki = 0.04;
@@ -169,7 +171,7 @@ void Set_Speed(uint16_t goal) //TODO detect failure
 			duty = 100;
 		}
 
-		Update_PWM(duty);
+		Update_PWM(duty); //TODO change to higher resolution
 		HAL_Delay(period);
 		if (error < 10 && error > -10)
 		{
@@ -183,12 +185,22 @@ void Set_Speed(uint16_t goal) //TODO detect failure
 
 	} while(stable < stable_threshold && failures < failure_threshold);
 	Motor_Done_Complete();
+#else
+	Set_CW();
+	int duty = 100*(goal/1200.0);
+	if (duty > 100)
+	{
+		duty = 100;
+	}
+	Update_PWM(duty);
+	Motor_Done_Complete();
+#endif
 }
 
 void Update_PWM(uint32_t duty)
 {
 	//APP_DBG_MSG("\r\n\r** in Update_PWM, duty: %lu\n", duty);
-	uint32_t CCR = (TIM16->ARR)*(duty/100.0);
+	uint32_t CCR = (TIM16->ARR)*(duty/100.0); //TODO checnge ARR to higher resolution
 	//APP_DBG_MSG("\r\n\r** in Update_PWM, CCR: %lu\n", CCR);
 	//APP_DBG_MSG("\r\n\r** CCR: %lu \n", CCR);
 	Set_CCR(CCR);
