@@ -1,8 +1,8 @@
-../Core/Src/state_commands.c:23:6:Arm_Spin_State	24	static
-../Core/Src/state_commands.c:35:9:Arm_Done_Spinning	24	static
-../Core/Src/state_commands.c:50:9:Arm_Stopped	16	static
-../Core/Src/state_commands.c:64:9:Arm_Launched_In_Position	24	static
-../Core/Src/state_commands.c:83:6:Launch_Disc_State	24	static
-../Core/Src/state_commands.c:108:10:Calc_Big_Motor_Speed	16	static
-../Core/Src/state_commands.c:113:10:Calc_Launch_Delay	24	static
-../Core/Src/state_commands.c:119:6:Motor_Init	8	static
+../Core/Src/state_commands.c:17:6:Arm_Spin_State	24	static
+../Core/Src/state_commands.c:29:9:Arm_Done_Spinning	24	static
+../Core/Src/state_commands.c:44:9:Arm_Stopped	16	static
+../Core/Src/state_commands.c:58:9:Arm_Launched_In_Position	24	static
+../Core/Src/state_commands.c:77:6:Launch_Disc_State	24	static
+../Core/Src/state_commands.c:102:10:Calc_Big_Motor_Speed	16	static
+../Core/Src/state_commands.c:107:10:Calc_Launch_Delay	24	static
+../Core/Src/state_commands.c:113:6:Motor_Init	8	static

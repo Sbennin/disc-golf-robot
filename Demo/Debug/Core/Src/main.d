@@ -38,7 +38,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_system.h \
  ../Core/Inc/communication_utilities.h ../Core/Inc/main.h \
  ../Core/Inc/utilities.h ../Core/Inc/state_commands.h \
- ../Core/Inc/sevseg_display.h
+ ../Core/Inc/sevseg_display.h ../Core/Inc/solenoid.h
 ../Core/Inc/main.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal.h:
 ../Core/Inc/stm32wbxx_hal_conf.h:
@@ -82,3 +82,4 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/utilities.h:
 ../Core/Inc/state_commands.h:
 ../Core/Inc/sevseg_display.h:
+../Core/Inc/solenoid.h:

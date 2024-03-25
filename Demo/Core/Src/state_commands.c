@@ -10,12 +10,6 @@
 #include "utilities.h"
 #include <stdlib.h>
 
-#define BIG_MOTOR_GEAR_RATIO 4
-#define COMMAND_DELAY 100 //ms
-#define MOTOR_SPEED_TOL 10 //rpm
-#define MOTOR_STOP_TOL 5 //rpm
-#define LAUNCH_DELAY_DIV 4 //determines when solenoid is triggered in rev cycle, smaller number is sooner
-
 uint16_t Calc_Big_Motor_Speed(uint16_t);
 uint16_t Calc_Launch_Delay(uint16_t);
 void Motor_Init();
