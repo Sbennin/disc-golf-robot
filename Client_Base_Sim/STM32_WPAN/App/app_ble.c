@@ -175,7 +175,6 @@ typedef struct
 #define BD_ADDR_SIZE_LOCAL    6
 
 /* USER CODE BEGIN PD */
-#define LED_ON_TIMEOUT            (0.005*1000*1000/CFG_TS_TICK_VAL) /**< 5ms */ //TODO maybe not needed
 /* USER CODE END PD */
 
 /* Private macros ------------------------------------------------------------*/

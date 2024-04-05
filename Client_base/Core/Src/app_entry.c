@@ -68,10 +68,6 @@ PLACE_IN_SECTION("MB_MEM2") ALIGN(4) static uint8_t SystemSpareEvtBuffer[sizeof(
 PLACE_IN_SECTION("MB_MEM2") ALIGN(4) static uint8_t BleSpareEvtBuffer[sizeof(TL_PacketHeader_t) + TL_EVT_HDR_SIZE + 255];
 
 /* USER CODE BEGIN PV */
-/* Section specific to button management using UART */
-static uint8_t aRxBuffer[RX_BUFFER_SIZE];
-static uint8_t CommandString[C_SIZE_CMD_STRING];
-static uint16_t indexReceiveChar = 0;
 
 /* USER CODE END PV */
 
@@ -92,8 +88,6 @@ static void APPE_SysEvtError(void * pPayload);
 static void Init_Rtc(void);
 
 /* USER CODE BEGIN PFP */
-static void Led_Init( void );
-static void Button_Init( void );
 
 /* Section specific to button management using UART */
 static void RxUART_Init(void);
@@ -133,8 +127,7 @@ void MX_APPE_Init(void)
 
 /* USER CODE BEGIN APPE_Init_1 */
   APPD_Init();
-
-  /**
+/* USER CODE END APPE_Init_1 */  /**
    * The Standby mode should not be entered before the initialization is over
    * The default state of the Low Power Manager is to allow the Standby Mode so an request is needed here
    */
@@ -534,37 +527,7 @@ static void APPE_SysEvtReadyProcessing(void * pPayload)
 }
 
 /* USER CODE BEGIN FD_LOCAL_FUNCTIONS */
-static void Led_Init( void )
-{
-#if (CFG_LED_SUPPORTED == 1)
-  /**
-   * Leds Initialization
-   */
 
-  BSP_LED_Init(LED_BLUE);
-  BSP_LED_Init(LED_GREEN);
-  BSP_LED_Init(LED_RED);
-
-  BSP_LED_On(LED_GREEN);
-#endif
-
-  return;
-}
-
-static void Button_Init( void )
-{
-#if (CFG_BUTTON_SUPPORTED == 1)
-  /**
-   * Button Initialization
-   */
-
-  BSP_PB_Init(BUTTON_SW1, BUTTON_MODE_EXTI);
-  BSP_PB_Init(BUTTON_SW2, BUTTON_MODE_EXTI);
-  BSP_PB_Init(BUTTON_SW3, BUTTON_MODE_EXTI);
-#endif
-
-  return;
-}
 /* USER CODE END FD_LOCAL_FUNCTIONS */
 
 /*************************************************************
@@ -656,15 +619,15 @@ void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin )
 {
   switch (GPIO_Pin)
   {
-    case BUTTON_SW1_PIN:
+    case B1_PIN:
      APP_BLE_Key_Button1_Action();
       break; 
 
-    case BUTTON_SW2_PIN:
+    case B2_PIN:
       APP_BLE_Key_Button2_Action();
       break; 
 
-    case BUTTON_SW3_PIN:
+    case B3_PIN:
       APP_BLE_Key_Button3_Action();
       break;
 

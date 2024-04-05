@@ -38,6 +38,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "base_utilities.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -420,7 +421,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
                   && gap_evt_proc_complete->Status == 0x00)
               {
                 /* USER CODE BEGIN GAP_GENERAL_DISCOVERY_PROC */
-                BSP_LED_Off(LED_BLUE);
+            	Blue_Off();
                 APP_DBG_MSG("LED BLUE OFF\n");
                 /* USER CODE END GAP_GENERAL_DISCOVERY_PROC */
                 APP_DBG_MSG("-- GAP GENERAL DISCOVERY PROCEDURE_COMPLETED\n\r");
@@ -470,7 +471,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
               {
                 APP_DBG_MSG("  Fail   : aci_l2cap_connection_parameter_update_resp command, result: 0x%x \n\r", ret);
                 /* USER CODE BEGIN BLE_STATUS_SUCCESS */
-                BSP_LED_On(LED_RED);
+                Red_On();
                 /* USER CODE END BLE_STATUS_SUCCESS */
               }
               else
@@ -618,7 +619,27 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
 
                     case AD_TYPE_MANUFACTURER_SPECIFIC_DATA: /* Manufacturer Specific */
                       /* USER CODE BEGIN AD_TYPE_MANUFACTURER_SPECIFIC_DATA */
+                        if (adlength >= 4 && adv_report_data[k + 2] == 0x01)
+                        { /* ST VERSION ID 01 */
+                          switch (adv_report_data[k + 3])
+                          {   /* Demo ID */
+                             case CFG_DEV_ID_P2P_SERVER1: /* End Device 1 */
+                             APP_DBG_MSG("--- ST MANUFACTURER ID --- \n\r");
+                             APP_DBG_MSG("-- SERVER DETECTED -- VIA MAN ID\n\r");
+                             BleApplicationContext.DeviceServerFound = 0x01;
+                             SERVER_REMOTE_ADDR_TYPE = le_advertising_event->Advertising_Report[0].Address_Type;
+                             SERVER_REMOTE_BDADDR[0] = le_advertising_event->Advertising_Report[0].Address[0];
+                             SERVER_REMOTE_BDADDR[1] = le_advertising_event->Advertising_Report[0].Address[1];
+                             SERVER_REMOTE_BDADDR[2] = le_advertising_event->Advertising_Report[0].Address[2];
+                             SERVER_REMOTE_BDADDR[3] = le_advertising_event->Advertising_Report[0].Address[3];
+                             SERVER_REMOTE_BDADDR[4] = le_advertising_event->Advertising_Report[0].Address[4];
+                             SERVER_REMOTE_BDADDR[5] = le_advertising_event->Advertising_Report[0].Address[5];
+                             break;
 
+                            default:
+                              break;
+                          }
+                        }
                       /* USER CODE END AD_TYPE_MANUFACTURER_SPECIFIC_DATA */
                       if (adlength >= 7 && adv_report_data[k + 2] == 0x01)
                       { /* ST VERSION ID 01 */
@@ -962,7 +983,7 @@ static void Scan_Request(void)
   if (BleApplicationContext.Device_Connection_Status != APP_BLE_CONNECTED_CLIENT)
   {
     /* USER CODE BEGIN APP_BLE_CONNECTED_CLIENT */
-    BSP_LED_On(LED_BLUE);
+	Blue_On();
     APP_DBG_MSG("LED BLUE ON\n");
     /* USER CODE END APP_BLE_CONNECTED_CLIENT */
     result = aci_gap_start_general_discovery_proc(SCAN_P, SCAN_L, CFG_BLE_ADDRESS_TYPE, 1);
@@ -976,7 +997,7 @@ static void Scan_Request(void)
     else
     {
     /* USER CODE BEGIN BLE_SCAN_FAILED */
-      BSP_LED_On(LED_RED);
+    	Red_On();
     /* USER CODE END BLE_SCAN_FAILED */
       APP_DBG_MSG("-- BLE_App_Start_Limited_Disc_Req, Failed \r\n\r");
     }
@@ -1012,7 +1033,7 @@ static void Connect_Request(void)
     if (result == BLE_STATUS_SUCCESS)
     {
       /* USER CODE BEGIN BLE_CONNECT_SUCCESS */
-
+    	Blue_Off();
       /* USER CODE END BLE_CONNECT_SUCCESS */
       BleApplicationContext.Device_Connection_Status = APP_BLE_LP_CONNECTING;
 
@@ -1020,7 +1041,7 @@ static void Connect_Request(void)
     else
     {
       /* USER CODE BEGIN BLE_CONNECT_FAILED */
-      BSP_LED_On(LED_RED);
+    	Red_On();
       /* USER CODE END BLE_CONNECT_FAILED */
       BleApplicationContext.Device_Connection_Status = APP_BLE_IDLE;
 

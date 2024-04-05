@@ -32,7 +32,7 @@
 #include "app_ble.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "base_utilities.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,7 +46,7 @@ typedef enum
 
 typedef struct
 {
-  uint8_t * pPayload; //TODO increase size?
+  uint8_t * pPayload;
   uint8_t     Length;
 }P2P_Client_Data_t;
 
@@ -117,31 +117,15 @@ typedef struct{
   uint8_t                                     Button1;
 }P2P_ButtonCharValue_t;
 */
-typedef enum {
-  STOPPED,
-  PENDING,
-  DONE
-}Motor_State;
-
-typedef struct
-{
-	uint16_t GoalSpeed;
-}P2P_GoalSpeed_t;
-
-typedef struct
-{
-	Motor_State MotorState;
-}P2P_MotorState_t;
-
 typedef struct
 {
 
   uint8_t       Notification_Status; /* used to check if P2P Server is enabled to Notify */
 
-  P2P_GoalSpeed_t       GoalControl;
-  P2P_MotorState_t      MotorStateControl;
+  Motor_State_t State_Status;
+  uint16_t small_motor_goal_speed;
 
-  uint16_t ConnectionHandle; 
+  uint16_t ConnectionHandle;
 
 
 } P2P_Client_App_Context_t;
@@ -179,12 +163,13 @@ static P2P_Client_App_Context_t P2P_Client_App_Context;
 static void Gatt_Notification(P2P_Client_App_Notification_evt_t *pNotification);
 static SVCCTL_EvtAckStatus_t Event_Handler(void *Event);
 /* USER CODE BEGIN PFP */
-static tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload); //TODO increase to 16 bit payload
-//static void Button_Trigger_Received( void ); //TODO
-static void Button1_Trigger_Received( void );
+static tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *pPayload);
+static void Button1_Trigger_Received( void ); //TODO maybe not use some of these button triggers
 static void Button2_Trigger_Received( void );
 static void Button3_Trigger_Received( void );
+static void Button_Trigger_Received( void );
 static void Update_Service( void );
+void Speed_To_Payload(uint16_t, uint8_t[2]);
 /* USER CODE END PFP */
 
 /* Functions Definition ------------------------------------------------------*/
@@ -211,13 +196,9 @@ void P2PC_APP_Init(void)
   P2P_Client_App_Context.Notification_Status=0;
   P2P_Client_App_Context.ConnectionHandle =  0x00;
 
-  P2P_Client_App_Context.GoalControl.GoalSpeed=0; //goal speed is 0
-  P2P_Client_App_Context.MotorStateControl.MotorState=STOPPED;
+  P2P_Client_App_Context.State_Status = STOPPED;
+  P2P_Client_App_Context.small_motor_goal_speed = 0;
 
-  //P2P_Client_App_Context.LedControl.Device_Led_Selection=0x00;/* device Led */
-  //P2P_Client_App_Context.LedControl.Led1=0x00; /* led OFF */
-  //P2P_Client_App_Context.ButtonStatus.Device_Button_Selection=0x01;/* Device1 */
-  //P2P_Client_App_Context.ButtonStatus.Button1=0x00;
 /* USER CODE END P2PC_APP_Init_1 */
   for(index = 0; index < BLE_CFG_CLT_MAX_NBR_CB; index++)
   {
@@ -266,7 +247,7 @@ void P2PC_APP_Notification(P2PC_APP_ConnHandle_Not_evt_t *pNotification)
       {
         aP2PClientContext[index].state = APP_BLE_IDLE;
       }
-      BSP_LED_Off(LED_BLUE); //TODO disconnect event
+      Blue_Off(); //TODO disconnect event
         
 #if OOB_DEMO == 0
       UTIL_SEQ_SetTask(1<<CFG_TASK_CONN_DEV_1_ID, CFG_SCH_PRIO_0);
@@ -290,6 +271,7 @@ void P2PC_APP_Notification(P2PC_APP_ConnHandle_Not_evt_t *pNotification)
 void P2PC_APP_SW1_Button_Action(void) //called from button interrupt
 {
 	//TODO run task from sequencer
+	P2P_Client_App_Context.small_motor_goal_speed = 250;
   UTIL_SEQ_SetTask(1<<CFG_TASK_SW1_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
 
 }
@@ -622,22 +604,22 @@ void Gatt_Notification(P2P_Client_App_Notification_evt_t *pNotification)
 /* USER CODE BEGIN P2P_NOTIFICATION_INFO_RECEIVED_EVT */
     {
         //TODO got notification from server
-    	P2P_Client_App_Context.MotorStateControl.MotorState=pNotification->DataTransfered.pPayload[0];
-    	switch(P2P_Client_App_Context.MotorStateControl.MotorState){
+    	P2P_Client_App_Context.State_Status = pNotification->DataTransfered.pPayload[1];
+    	switch(P2P_Client_App_Context.State_Status ){
     	case STOPPED : {
-    		SetState(3);
+    		//SetState(3);
     		APP_DBG_MSG(" -- P2P APPLICATION CLIENT : NOTIFICATION RECEIVED - MOTOR STOPPED \n\r");
     		APP_DBG_MSG(" \n\r");
     		break;
     	}
     	case PENDING : {
-    		SetState(2);
+    		//SetState(2);
     		APP_DBG_MSG(" -- P2P APPLICATION CLIENT : NOTIFICATION RECEIVED - MOTOR PENDING \n\r");
     		APP_DBG_MSG(" \n\r");
     		break;
     	}
     	case DONE : {
-    		SetState(0);
+    		//SetState(0);
     		APP_DBG_MSG(" -- P2P APPLICATION CLIENT : NOTIFICATION RECEIVED - MOTOR DONE \n\r");
     		APP_DBG_MSG(" \n\r");
     		break;
