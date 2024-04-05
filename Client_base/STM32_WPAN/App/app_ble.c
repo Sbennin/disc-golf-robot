@@ -363,12 +363,7 @@ void APP_BLE_Init(void)
   HW_TS_Create(CFG_TIM_PROC_ID_ISR, &(BleApplicationContext.SwitchOffGPIO_timer_Id), hw_ts_SingleShot, Switch_OFF_GPIO);
 #endif
 
-#if (OOB_DEMO == 0)
-  /**
-   * Start scanning
-   */
-  UTIL_SEQ_SetTask(1 << CFG_TASK_START_SCAN_ID, CFG_SCH_PRIO_0);
-#endif
+  Start_Scanning();
   /* USER CODE BEGIN APP_BLE_Init_2 */
 
   /* USER CODE END APP_BLE_Init_2 */
@@ -494,7 +489,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt)
           case ACI_HAL_END_OF_RADIO_ACTIVITY_VSEVT_CODE:
             {
               /* USER CODE BEGIN RADIO_ACTIVITY_EVENT */
-              BSP_LED_On(LED_GREEN);
+              Green_On();
               HW_TS_Start(BleApplicationContext.SwitchOffGPIO_timer_Id, (uint32_t)LED_ON_TIMEOUT);
               /* USER CODE END RADIO_ACTIVITY_EVENT */
             }
@@ -720,18 +715,7 @@ APP_BLE_ConnStatus_t APP_BLE_Get_Client_Connection_Status(uint16_t Connection_Ha
 /* USER CODE BEGIN FD */
 void APP_BLE_Key_Button1_Action(void) //TODO button 1 pressed
 {
-#if OOB_DEMO == 0 
-  P2PC_APP_SW1_Button_Action();
-#else 
-  if(P2P_Client_APP_Get_State () != APP_BLE_CONNECTED_CLIENT)
-  {
-    UTIL_SEQ_SetTask(1 << CFG_TASK_START_SCAN_ID, CFG_SCH_PRIO_0);
-  }
-  else 
-  {
-    P2PC_APP_SW1_Button_Action();
-  }   
-#endif 
+	P2PC_APP_SW1_Button_Action();
 }
 
 void APP_BLE_Key_Button2_Action(void)
@@ -742,6 +726,19 @@ void APP_BLE_Key_Button2_Action(void)
 void APP_BLE_Key_Button3_Action(void)
 {
 	P2PC_APP_SW3_Button_Action();
+}
+
+void APP_BLE_Key_Hall_Sensor_Action(void)
+{
+	P2PC_APP_Hall_Sensor_Action();
+}
+
+void Client_Start_Scanning()
+{
+	  if(P2P_Client_APP_Get_State () != APP_BLE_CONNECTED_CLIENT)
+	  {
+	    UTIL_SEQ_SetTask(1 << CFG_TASK_START_SCAN_ID, CFG_SCH_PRIO_0);
+	  }
 }
 /* USER CODE END FD */
 /*************************************************************
@@ -1056,7 +1053,7 @@ static void Connect_Request(void)
 static void Switch_OFF_GPIO()
 {
   /* USER CODE BEGIN Switch_OFF_GPIO */
-  BSP_LED_Off(LED_GREEN);
+	Green_Off();
   /* USER CODE END Switch_OFF_GPIO */
 }
 

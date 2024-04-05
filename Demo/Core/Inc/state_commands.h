@@ -11,6 +11,7 @@ uint8_t Arm_Done_Spinning(uint16_t);
 uint8_t Arm_Launched_In_Position();
 uint8_t Arm_Stopped();
 void Launch_Disc_State(uint16_t);
+void Start_Scanning();
 
 
 #endif /* INC_STATE_COMMANDS_H_ */

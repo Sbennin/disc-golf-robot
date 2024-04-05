@@ -71,8 +71,7 @@ DMA_HandleTypeDef hdma_usart1_tx;
 RTC_HandleTypeDef hrtc;
 
 /* USER CODE BEGIN PV */
-uint8_t state;
-uint8_t state_changed;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -132,8 +131,7 @@ int main(void)
   MX_RTC_Init();
   MX_RF_Init();
   /* USER CODE BEGIN 2 */
-  state = 3;
-  state_changed = 1;
+  SevenSegment_Off();
   /* USER CODE END 2 */
 
   /* Init code for STM32_WPAN */
@@ -147,52 +145,6 @@ int main(void)
     MX_APPE_Process();
 
     /* USER CODE BEGIN 3 */
-    if (state == 0) //motor DONE, waiting for button action
-    {
-    	if (state_changed == 1)
-    	{
-    		Blue_On();
-    		Green_Off();
-    		Red_Off();
-    		state_changed = 0;
-    	}
-    }
-    if (state == 1) //Waiting for motor pending, should be short state unless error
-    {
-    	if (state_changed == 1)
-    	{
-    		Blue_Off();
-    		Green_Off();
-    		Red_Off();
-    		state_changed = 0;
-    	}
-    }
-    if (state == 2) //Motor PENDING
-    {
-    	if (state_changed == 1)
-    	{
-    		Blue_Off();
-    		Green_On();
-    		Red_Off();
-    		state_changed = 0;
-    	}
-    }
-    if (state == 3)//Motor STOPPED
-    {
-    	if (state_changed == 1)
-    	{
-    		Blue_Off();
-    		Green_Off();
-    		Red_On();
-    		state_changed = 0;
-    	}
-    }
-    else
-    {
-    	state = 0;
-    	state_changed = 1;
-    }
-  }
   /* USER CODE END 3 */
 }
 

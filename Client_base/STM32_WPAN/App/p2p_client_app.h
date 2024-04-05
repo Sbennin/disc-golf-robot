@@ -73,6 +73,7 @@ uint8_t P2P_Client_APP_Get_State( void );
 void P2PC_APP_SW1_Button_Action(void);
 void P2PC_APP_SW2_Button_Action(void);
 void P2PC_APP_SW3_Button_Action(void);
+void P2PC_APP_Hall_Sensor_Action(void);
 /* USER CODE END EFP */
 
 #ifdef __cplusplus

@@ -134,7 +134,7 @@ typedef struct
 
 /* Private defines ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define DISC_SPIN_GOAL_SPEED 300
 /* USER CODE END PD */
 
 /* Private macros -------------------------------------------------------------*/
@@ -157,6 +157,14 @@ static P2P_ClientContext_t aP2PClientContext[BLE_CFG_CLT_MAX_NBR_CB];
  */
 /* USER CODE BEGIN PV */
 static P2P_Client_App_Context_t P2P_Client_App_Context;
+uint32_t current_rpm = 0;
+uint32_t hs_prev_tick = 0;
+
+uint8_t ready_to_launch = 0;
+uint8_t launched = 0;
+
+uint8_t state;
+uint8_t state_changed;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -170,6 +178,8 @@ static void Button3_Trigger_Received( void );
 static void Button_Trigger_Received( void );
 static void Update_Service( void );
 void Speed_To_Payload(uint16_t, uint8_t[2]);
+void Update_Speed();
+void Done_Launch();
 /* USER CODE END PFP */
 
 /* Functions Definition ------------------------------------------------------*/
@@ -188,7 +198,8 @@ void P2PC_APP_Init(void)
   UTIL_SEQ_RegTask( 1<< CFG_TASK_SW1_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, Button1_Trigger_Received );
   UTIL_SEQ_RegTask( 1<< CFG_TASK_SW2_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, Button2_Trigger_Received );
   UTIL_SEQ_RegTask( 1<< CFG_TASK_SW3_BUTTON_PUSHED_ID, UTIL_SEQ_RFU, Button3_Trigger_Received );
-
+  UTIL_SEQ_RegTask( 1<< CFG_TASK_HALL_SENSOR_TRIGGERED_ID, UTIL_SEQ_RFU, Update_Speed );
+  UTIL_SEQ_RegTask(1<<CFG_TASK_DONE_LAUNCH, UTIL_SEQ_RFU, Done_Launch);
   /**
    * Initialize LedButton Service
    */
@@ -271,7 +282,7 @@ void P2PC_APP_Notification(P2PC_APP_ConnHandle_Not_evt_t *pNotification)
 void P2PC_APP_SW1_Button_Action(void) //called from button interrupt
 {
 	//TODO run task from sequencer
-	P2P_Client_App_Context.small_motor_goal_speed = 250;
+	P2P_Client_App_Context.small_motor_goal_speed = DISC_SPIN_GOAL_SPEED;
   UTIL_SEQ_SetTask(1<<CFG_TASK_SW1_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
 
 }
@@ -287,6 +298,26 @@ void P2PC_APP_SW3_Button_Action(void) //called from button interrupt
 {
 	//TODO run task from sequencer
   UTIL_SEQ_SetTask(1<<CFG_TASK_SW3_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
+
+}
+
+void P2PC_APP_Hall_Sensor_Action(void)
+{
+	uint32_t curr_tick = HAL_GetTick();
+	uint32_t time_since_last = 0;
+	if (curr_tick > hs_prev_tick){
+		time_since_last = curr_tick - hs_prev_tick;
+	}
+	current_rpm = (uint32_t)(1.0 / time_since_last * 60.0 * 1000.0);
+	hs_prev_tick = curr_tick;
+
+	if (ready_to_launch == 1 && P2P_Client_App_Context.State_Status == DONE){
+		ready_to_launch = 0;
+		Launch_Disc_State(current_rpm);
+		launched = 1;
+		Util_Seq_SetTask(1<<CFG_TASK_DONE_LAUNCH, CFG_SCH_PRIO_0);
+	}
+	UTIL_SEQ_SetTask(1<<CFG_TASK_HALL_SENSOR_TRIGGERED_ID, CFG_SCH_PRIO_0);
 
 }
 /* USER CODE END FD */
@@ -720,27 +751,28 @@ void Button_Trigger_Received(void) //TODO run from sequencer, button interrupt
 */
 void Button1_Trigger_Received(void)
 {
-	APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON 1 PUSHED - WRITE TO SERVER \n ");
-	APP_DBG_MSG(" \n\r");
+	  APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON PUSHED - WRITE TO SERVER \n ");
+	  APP_DBG_MSG(" \n\r");
 
-	P2P_Client_App_Context.GoalControl.GoalSpeed = 0;
+	  uint8_t payload [2];
+	  Speed_To_Payload(P2P_Client_App_Context.small_motor_goal_speed, payload);
 
-	Write_Char( P2P_WRITE_CHAR_UUID, 0, (uint8_t *)&P2P_Client_App_Context.GoalControl);
-	SetState(1);
+	  Write_Char( P2P_WRITE_CHAR_UUID, 0, payload);
 
 	return;
 }
 
 void Button2_Trigger_Received(void)
 {
-	APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON 2 PUSHED - WRITE TO SERVER \n ");
-	APP_DBG_MSG(" \n\r");
-
-	P2P_Client_App_Context.GoalControl.GoalSpeed = 300;
-
-	Write_Char( P2P_WRITE_CHAR_UUID, 0, (uint8_t *)&P2P_Client_App_Context.GoalControl);
-	SetState(1);
-
+	if (state == 0){
+		state = 1;
+		state_changed = 1;
+		ready_to_launch = 1;
+	}
+	else if (state == 3){
+		state = 0;
+		state_changed = 1;
+	}
 	return;
 }
 
@@ -755,6 +787,17 @@ void Button3_Trigger_Received(void)
 	SetState(1);
 
 	return;
+}
+
+void Update_Speed(void)
+{
+	SevenSegment_UpdateAllDigits(current_rpm);
+}
+
+void Done_Launch(void)
+{
+	P2P_Client_App_Context.small_motor_goal_speed = 0;
+	UTIL_SEQ_SetTask(1<<CFG_TASK_B2_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
 }
 
 void Update_Service()

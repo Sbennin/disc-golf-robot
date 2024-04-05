@@ -14,6 +14,11 @@ uint16_t Calc_Big_Motor_Speed(uint16_t);
 uint16_t Calc_Launch_Delay(uint16_t);
 void Motor_Init();
 
+void Start_Scanning()
+{
+	Client_Start_Scanning();
+}
+
 void Arm_Spin_State(uint16_t arm_speed)
 {
 	Motor_Init();

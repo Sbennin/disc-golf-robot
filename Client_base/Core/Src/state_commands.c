@@ -100,7 +100,7 @@ void Launch_Disc_State(uint16_t set_arm_speed)
 	//Green_Off();
 	//Red_On();
 	//HAL_Delay(launch_delay*LAUNCH_DELAY_DIV); //wait for full rev to confirm launched
-	HAL_Delay(500);
+	HAL_Delay(1.0/set_arm_speed*60.0*1000.0);
 	//Red_Off();
 	Solenoid_Down();
 }
