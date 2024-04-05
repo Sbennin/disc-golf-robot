@@ -11,7 +11,7 @@
 
 /* Private define ------------------------------------------------------------*/
 #define PPR 7
-#define GEAR_RATIO 3.7
+#define GEAR_RATIO 3.7 * 3.0
 #define PI_USED 0
 
 /* Private macro -------------------------------------------------------------*/
