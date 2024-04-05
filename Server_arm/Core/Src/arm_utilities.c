@@ -187,7 +187,7 @@ void Set_Speed(uint16_t goal) //TODO detect failure
 	Motor_Done_Complete();
 #else
 	Set_CW();
-	int duty = 100*(goal/1200.0);
+	int duty = 100*(goal/300.0);
 	if (duty > 100)
 	{
 		duty = 100;

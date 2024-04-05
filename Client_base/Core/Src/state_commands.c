@@ -7,7 +7,7 @@
 #include "communication_utilities.h"
 #include "hall_sensor.h"
 #include "solenoid.h"
-#include "utilities.h"
+#include "base_utilities.h"
 #include <stdlib.h>
 
 #define BIG_MOTOR_GEAR_RATIO 4

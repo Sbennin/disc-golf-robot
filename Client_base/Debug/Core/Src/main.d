@@ -53,7 +53,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_rtc.h \
  ../Middlewares/ST/STM32_WPAN/ble/core/ble_bufsize.h \
  ../Core/Inc/app_entry.h ../Core/Inc/app_common.h \
- ../Core/Inc/stm32wbxx_nucleo.h ../Core/Inc/stm32wbxx_nucleo_errno.h
+ ../Core/Inc/stm32wbxx_nucleo.h ../Core/Inc/stm32wbxx_nucleo_errno.h \
+ ../Core/Inc/sevseg_display.h
 ../Core/Inc/main.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal.h:
 ../Core/Inc/stm32wbxx_hal_conf.h:
@@ -113,3 +114,4 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/app_common.h:
 ../Core/Inc/stm32wbxx_nucleo.h:
 ../Core/Inc/stm32wbxx_nucleo_errno.h:
+../Core/Inc/sevseg_display.h:

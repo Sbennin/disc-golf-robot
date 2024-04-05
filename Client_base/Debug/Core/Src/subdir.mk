@@ -8,9 +8,14 @@ C_SRCS += \
 ../Core/Src/app_debug.c \
 ../Core/Src/app_entry.c \
 ../Core/Src/base_utilities.c \
+../Core/Src/communication_utilities.c \
+../Core/Src/hall_sensor.c \
 ../Core/Src/hw_timerserver.c \
 ../Core/Src/hw_uart.c \
 ../Core/Src/main.c \
+../Core/Src/sevseg_display.c \
+../Core/Src/solenoid.c \
+../Core/Src/state_commands.c \
 ../Core/Src/stm32_lpm_if.c \
 ../Core/Src/stm32wbxx_hal_msp.c \
 ../Core/Src/stm32wbxx_it.c \
@@ -21,9 +26,14 @@ OBJS += \
 ./Core/Src/app_debug.o \
 ./Core/Src/app_entry.o \
 ./Core/Src/base_utilities.o \
+./Core/Src/communication_utilities.o \
+./Core/Src/hall_sensor.o \
 ./Core/Src/hw_timerserver.o \
 ./Core/Src/hw_uart.o \
 ./Core/Src/main.o \
+./Core/Src/sevseg_display.o \
+./Core/Src/solenoid.o \
+./Core/Src/state_commands.o \
 ./Core/Src/stm32_lpm_if.o \
 ./Core/Src/stm32wbxx_hal_msp.o \
 ./Core/Src/stm32wbxx_it.o \
@@ -34,9 +44,14 @@ C_DEPS += \
 ./Core/Src/app_debug.d \
 ./Core/Src/app_entry.d \
 ./Core/Src/base_utilities.d \
+./Core/Src/communication_utilities.d \
+./Core/Src/hall_sensor.d \
 ./Core/Src/hw_timerserver.d \
 ./Core/Src/hw_uart.d \
 ./Core/Src/main.d \
+./Core/Src/sevseg_display.d \
+./Core/Src/solenoid.d \
+./Core/Src/state_commands.d \
 ./Core/Src/stm32_lpm_if.d \
 ./Core/Src/stm32wbxx_hal_msp.d \
 ./Core/Src/stm32wbxx_it.d \
@@ -51,7 +66,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/app_debug.cyclo ./Core/Src/app_debug.d ./Core/Src/app_debug.o ./Core/Src/app_debug.su ./Core/Src/app_entry.cyclo ./Core/Src/app_entry.d ./Core/Src/app_entry.o ./Core/Src/app_entry.su ./Core/Src/base_utilities.cyclo ./Core/Src/base_utilities.d ./Core/Src/base_utilities.o ./Core/Src/base_utilities.su ./Core/Src/hw_timerserver.cyclo ./Core/Src/hw_timerserver.d ./Core/Src/hw_timerserver.o ./Core/Src/hw_timerserver.su ./Core/Src/hw_uart.cyclo ./Core/Src/hw_uart.d ./Core/Src/hw_uart.o ./Core/Src/hw_uart.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32_lpm_if.cyclo ./Core/Src/stm32_lpm_if.d ./Core/Src/stm32_lpm_if.o ./Core/Src/stm32_lpm_if.su ./Core/Src/stm32wbxx_hal_msp.cyclo ./Core/Src/stm32wbxx_hal_msp.d ./Core/Src/stm32wbxx_hal_msp.o ./Core/Src/stm32wbxx_hal_msp.su ./Core/Src/stm32wbxx_it.cyclo ./Core/Src/stm32wbxx_it.d ./Core/Src/stm32wbxx_it.o ./Core/Src/stm32wbxx_it.su ./Core/Src/stm32wbxx_nucleo.cyclo ./Core/Src/stm32wbxx_nucleo.d ./Core/Src/stm32wbxx_nucleo.o ./Core/Src/stm32wbxx_nucleo.su ./Core/Src/system_stm32wbxx.cyclo ./Core/Src/system_stm32wbxx.d ./Core/Src/system_stm32wbxx.o ./Core/Src/system_stm32wbxx.su
+	-$(RM) ./Core/Src/app_debug.cyclo ./Core/Src/app_debug.d ./Core/Src/app_debug.o ./Core/Src/app_debug.su ./Core/Src/app_entry.cyclo ./Core/Src/app_entry.d ./Core/Src/app_entry.o ./Core/Src/app_entry.su ./Core/Src/base_utilities.cyclo ./Core/Src/base_utilities.d ./Core/Src/base_utilities.o ./Core/Src/base_utilities.su ./Core/Src/communication_utilities.cyclo ./Core/Src/communication_utilities.d ./Core/Src/communication_utilities.o ./Core/Src/communication_utilities.su ./Core/Src/hall_sensor.cyclo ./Core/Src/hall_sensor.d ./Core/Src/hall_sensor.o ./Core/Src/hall_sensor.su ./Core/Src/hw_timerserver.cyclo ./Core/Src/hw_timerserver.d ./Core/Src/hw_timerserver.o ./Core/Src/hw_timerserver.su ./Core/Src/hw_uart.cyclo ./Core/Src/hw_uart.d ./Core/Src/hw_uart.o ./Core/Src/hw_uart.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/sevseg_display.cyclo ./Core/Src/sevseg_display.d ./Core/Src/sevseg_display.o ./Core/Src/sevseg_display.su ./Core/Src/solenoid.cyclo ./Core/Src/solenoid.d ./Core/Src/solenoid.o ./Core/Src/solenoid.su ./Core/Src/state_commands.cyclo ./Core/Src/state_commands.d ./Core/Src/state_commands.o ./Core/Src/state_commands.su ./Core/Src/stm32_lpm_if.cyclo ./Core/Src/stm32_lpm_if.d ./Core/Src/stm32_lpm_if.o ./Core/Src/stm32_lpm_if.su ./Core/Src/stm32wbxx_hal_msp.cyclo ./Core/Src/stm32wbxx_hal_msp.d ./Core/Src/stm32wbxx_hal_msp.o ./Core/Src/stm32wbxx_hal_msp.su ./Core/Src/stm32wbxx_it.cyclo ./Core/Src/stm32wbxx_it.d ./Core/Src/stm32wbxx_it.o ./Core/Src/stm32wbxx_it.su ./Core/Src/stm32wbxx_nucleo.cyclo ./Core/Src/stm32wbxx_nucleo.d ./Core/Src/stm32wbxx_nucleo.o ./Core/Src/stm32wbxx_nucleo.su ./Core/Src/system_stm32wbxx.cyclo ./Core/Src/system_stm32wbxx.d ./Core/Src/system_stm32wbxx.o ./Core/Src/system_stm32wbxx.su
 
 .PHONY: clean-Core-2f-Src
 

@@ -90,9 +90,9 @@ static void Init_Rtc(void);
 /* USER CODE BEGIN PFP */
 
 /* Section specific to button management using UART */
-static void RxUART_Init(void);
-static void RxCpltCallback(void);
-static void UartCmdExecute(void);
+//static void RxUART_Init(void);
+//static void RxCpltCallback(void);
+//static void UartCmdExecute(void);
 
 /* USER CODE END PFP */
 
@@ -127,18 +127,6 @@ void MX_APPE_Init(void)
 
 /* USER CODE BEGIN APPE_Init_1 */
   APPD_Init();
-/* USER CODE END APPE_Init_1 */  /**
-   * The Standby mode should not be entered before the initialization is over
-   * The default state of the Low Power Manager is to allow the Standby Mode so an request is needed here
-   */
-  UTIL_LPM_SetOffMode(1 << CFG_LPM_APP, UTIL_LPM_DISABLE);
-
-  Led_Init();
-
-  Button_Init();
-  
-  RxUART_Init();
-
 /* USER CODE END APPE_Init_1 */
   appe_Tl_Init();	/* Initialize all transport layers */
 
@@ -619,15 +607,15 @@ void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin )
 {
   switch (GPIO_Pin)
   {
-    case B1_PIN:
+    case B1_Pin:
      APP_BLE_Key_Button1_Action();
       break; 
 
-    case B2_PIN:
+    case B2_Pin:
       APP_BLE_Key_Button2_Action();
       break; 
 
-    case B3_PIN:
+    case B3_Pin:
       APP_BLE_Key_Button3_Action();
       break;
 
@@ -642,14 +630,14 @@ void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin )
   return;
 }
 
-static void RxUART_Init(void)
+/*static void RxUART_Init(void)
 {
   HW_UART_Receive_IT((hw_uart_id_t)CFG_DEBUG_TRACE_UART, aRxBuffer, 1U, RxCpltCallback);
 }
 
 static void RxCpltCallback(void)
 {
-  /* Filling buffer and wait for '\r' char */
+   Filling buffer and wait for '\r' char
   if (indexReceiveChar < C_SIZE_CMD_STRING)
   {
     if (aRxBuffer[0] == '\r')
@@ -658,7 +646,7 @@ static void RxCpltCallback(void)
 
       UartCmdExecute();
 
-      /* Clear receive buffer and character counter*/
+       Clear receive buffer and character counter
       indexReceiveChar = 0;
       memset(CommandString, 0, C_SIZE_CMD_STRING);
     }
@@ -668,13 +656,13 @@ static void RxCpltCallback(void)
     }
   }
 
-  /* Once a character has been sent, put back the device in reception mode */
+   Once a character has been sent, put back the device in reception mode
   HW_UART_Receive_IT((hw_uart_id_t)CFG_DEBUG_TRACE_UART, aRxBuffer, 1U, RxCpltCallback);
-}
+}*/
 
-static void UartCmdExecute(void)
+/*static void UartCmdExecute(void)
 {
-  /* Parse received CommandString */
+   Parse received CommandString
   if(strcmp((char const*)CommandString, "SW1") == 0)
   {
     APP_DBG_MSG("SW1 OK\n");
@@ -697,6 +685,6 @@ static void UartCmdExecute(void)
   {
     APP_DBG_MSG("NOT RECOGNIZED COMMAND : %s\n", CommandString);
   }
-}
+}*/
 
 /* USER CODE END FD_WRAP_FUNCTIONS */

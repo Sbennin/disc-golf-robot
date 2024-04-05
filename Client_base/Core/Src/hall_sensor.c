@@ -20,4 +20,5 @@ uint8_t Hall_Sensor_Triggered()
 uint32_t Read_Motor_Speed()
 {
 	//TODO implement
+	return 1;
 }

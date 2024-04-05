@@ -105,7 +105,9 @@ STM32_WPAN/App/p2p_client_app.o: ../STM32_WPAN/App/p2p_client_app.c \
  ../STM32_WPAN/App/p2p_client_app.h ../Utilities/sequencer/stm32_seq.h \
  ../STM32_WPAN/App/app_ble.h \
  ../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl/hci_tl.h \
- ../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl/tl.h
+ ../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl/tl.h \
+ ../Core/Inc/base_utilities.h ../Core/Inc/main.h \
+ ../Core/Inc/state_commands.h ../Core/Inc/sevseg_display.h
 ../Core/Inc/main.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal.h:
 ../Core/Inc/stm32wbxx_hal_conf.h:
@@ -220,3 +222,7 @@ STM32_WPAN/App/p2p_client_app.o: ../STM32_WPAN/App/p2p_client_app.c \
 ../STM32_WPAN/App/app_ble.h:
 ../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl/hci_tl.h:
 ../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl/tl.h:
+../Core/Inc/base_utilities.h:
+../Core/Inc/main.h:
+../Core/Inc/state_commands.h:
+../Core/Inc/sevseg_display.h:

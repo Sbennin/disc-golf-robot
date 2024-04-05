@@ -33,6 +33,8 @@
 
 /* USER CODE BEGIN Includes */
 #include "base_utilities.h"
+#include "state_commands.h"
+#include "sevseg_display.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -175,7 +177,7 @@ static tBleStatus Write_Char(uint16_t UUID, uint8_t Service_Instance, uint8_t *p
 static void Button1_Trigger_Received( void ); //TODO maybe not use some of these button triggers
 static void Button2_Trigger_Received( void );
 static void Button3_Trigger_Received( void );
-static void Button_Trigger_Received( void );
+//static void Button_Trigger_Received( void );
 static void Update_Service( void );
 void Speed_To_Payload(uint16_t, uint8_t[2]);
 void Update_Speed();
@@ -315,7 +317,7 @@ void P2PC_APP_Hall_Sensor_Action(void)
 		ready_to_launch = 0;
 		Launch_Disc_State(current_rpm);
 		launched = 1;
-		Util_Seq_SetTask(1<<CFG_TASK_DONE_LAUNCH, CFG_SCH_PRIO_0);
+		UTIL_SEQ_SetTask(1<<CFG_TASK_DONE_LAUNCH, CFG_SCH_PRIO_0);
 	}
 	UTIL_SEQ_SetTask(1<<CFG_TASK_HALL_SENSOR_TRIGGERED_ID, CFG_SCH_PRIO_0);
 
@@ -778,14 +780,6 @@ void Button2_Trigger_Received(void)
 
 void Button3_Trigger_Received(void)
 {
-	APP_DBG_MSG("-- P2P APPLICATION CLIENT  : BUTTON 3 PUSHED - WRITE TO SERVER \n ");
-	APP_DBG_MSG(" \n\r");
-
-	P2P_Client_App_Context.GoalControl.GoalSpeed = 800;
-
-	Write_Char( P2P_WRITE_CHAR_UUID, 0, (uint8_t *)&P2P_Client_App_Context.GoalControl);
-	SetState(1);
-
 	return;
 }
 
@@ -797,7 +791,15 @@ void Update_Speed(void)
 void Done_Launch(void)
 {
 	P2P_Client_App_Context.small_motor_goal_speed = 0;
-	UTIL_SEQ_SetTask(1<<CFG_TASK_B2_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
+	UTIL_SEQ_SetTask(1<<CFG_TASK_SW2_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
+}
+
+void Speed_To_Payload(uint16_t speed, uint8_t payload[2])
+{
+	//uint8_t test1 = (speed & 0xFF00) >> 8;
+	//uint8_t test2 = (speed & 0x00FF);
+	payload[0] = (speed & 0xFF00) >> 8; //most significant bits
+	payload[1] = (speed & 0x00FF); //least significant bits
 }
 
 void Update_Service()

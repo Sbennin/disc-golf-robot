@@ -11635,7 +11635,7 @@ LOAD C:/ST/STM32CubeIDE_1.14.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_rnglists
                 0x00000000000020cc       0x7c ./Utilities/sequencer/stm32_seq.o
 
-.debug_macro    0x0000000000000000    0x2d980
+.debug_macro    0x0000000000000000    0x2d979
  .debug_macro   0x0000000000000000      0x4af ./Core/Src/app_debug.o
  .debug_macro   0x00000000000004af      0xaa8 ./Core/Src/app_debug.o
  .debug_macro   0x0000000000000f57       0x22 ./Core/Src/app_debug.o
@@ -11826,13 +11826,13 @@ LOAD C:/ST/STM32CubeIDE_1.14.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x000000000002b82b      0x436 ./Middlewares/ST/STM32_WPAN/utilities/otp.o
  .debug_macro   0x000000000002bc61      0x448 ./Middlewares/ST/STM32_WPAN/utilities/stm_list.o
  .debug_macro   0x000000000002c0a9      0x43b ./Middlewares/ST/STM32_WPAN/utilities/stm_queue.o
- .debug_macro   0x000000000002c4e4      0x697 ./STM32_WPAN/App/app_ble.o
- .debug_macro   0x000000000002cb7b      0x64b ./STM32_WPAN/App/p2p_client_app.o
- .debug_macro   0x000000000002d1c6      0x459 ./STM32_WPAN/Target/hw_ipcc.o
- .debug_macro   0x000000000002d61f      0x174 ./Utilities/lpm/tiny_lpm/stm32_lpm.o
- .debug_macro   0x000000000002d793       0x4c ./Utilities/lpm/tiny_lpm/stm32_lpm.o
- .debug_macro   0x000000000002d7df      0x185 ./Utilities/sequencer/stm32_seq.o
- .debug_macro   0x000000000002d964       0x1c ./Utilities/sequencer/stm32_seq.o
+ .debug_macro   0x000000000002c4e4      0x690 ./STM32_WPAN/App/app_ble.o
+ .debug_macro   0x000000000002cb74      0x64b ./STM32_WPAN/App/p2p_client_app.o
+ .debug_macro   0x000000000002d1bf      0x459 ./STM32_WPAN/Target/hw_ipcc.o
+ .debug_macro   0x000000000002d618      0x174 ./Utilities/lpm/tiny_lpm/stm32_lpm.o
+ .debug_macro   0x000000000002d78c       0x4c ./Utilities/lpm/tiny_lpm/stm32_lpm.o
+ .debug_macro   0x000000000002d7d8      0x185 ./Utilities/sequencer/stm32_seq.o
+ .debug_macro   0x000000000002d95d       0x1c ./Utilities/sequencer/stm32_seq.o
 
 .debug_line     0x0000000000000000    0x3249b
  .debug_line    0x0000000000000000      0xde3 ./Core/Src/app_debug.o
@@ -11887,7 +11887,7 @@ LOAD C:/ST/STM32CubeIDE_1.14.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x0000000000031176      0x78d ./Utilities/lpm/tiny_lpm/stm32_lpm.o
  .debug_line    0x0000000000031903      0xb98 ./Utilities/sequencer/stm32_seq.o
 
-.debug_str      0x0000000000000000    0xfcc4a
+.debug_str      0x0000000000000000    0xfcc19
  .debug_str     0x0000000000000000    0xe1cbc ./Core/Src/app_debug.o
                                       0xe2db2 (size before relaxing)
  .debug_str     0x00000000000e1cbc     0x93d4 ./Core/Src/app_entry.o
@@ -11980,15 +11980,15 @@ LOAD C:/ST/STM32CubeIDE_1.14.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                                       0xdfe0b (size before relaxing)
  .debug_str     0x00000000000fb258      0x183 ./Middlewares/ST/STM32_WPAN/utilities/stm_queue.o
                                       0xdfea3 (size before relaxing)
- .debug_str     0x00000000000fb3db      0x926 ./STM32_WPAN/App/app_ble.o
-                                      0xebd69 (size before relaxing)
- .debug_str     0x00000000000fbd01      0x4af ./STM32_WPAN/App/p2p_client_app.o
+ .debug_str     0x00000000000fb3db      0x8f5 ./STM32_WPAN/App/app_ble.o
+                                      0xebd38 (size before relaxing)
+ .debug_str     0x00000000000fbcd0      0x4af ./STM32_WPAN/App/p2p_client_app.o
                                       0xe902a (size before relaxing)
- .debug_str     0x00000000000fc1b0      0x2eb ./STM32_WPAN/Target/hw_ipcc.o
+ .debug_str     0x00000000000fc17f      0x2eb ./STM32_WPAN/Target/hw_ipcc.o
                                       0xe0e3c (size before relaxing)
- .debug_str     0x00000000000fc49b      0x4b3 ./Utilities/lpm/tiny_lpm/stm32_lpm.o
+ .debug_str     0x00000000000fc46a      0x4b3 ./Utilities/lpm/tiny_lpm/stm32_lpm.o
                                        0x7f93 (size before relaxing)
- .debug_str     0x00000000000fc94e      0x2fc ./Utilities/sequencer/stm32_seq.o
+ .debug_str     0x00000000000fc91d      0x2fc ./Utilities/sequencer/stm32_seq.o
                                        0x8263 (size before relaxing)
 
 .debug_frame    0x0000000000000000     0xbd74

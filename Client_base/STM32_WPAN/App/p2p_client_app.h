@@ -47,7 +47,12 @@ typedef struct
 
 }P2PC_APP_ConnHandle_Not_evt_t;
 /* USER CODE BEGIN ET */
-
+typedef enum
+{
+	STOPPED,
+	PENDING,
+	DONE
+}Motor_State_t;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

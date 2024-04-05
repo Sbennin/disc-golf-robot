@@ -112,7 +112,8 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
  ../Utilities/lpm/tiny_lpm/stm32_lpm.h \
  ../Middlewares/ST/STM32_WPAN/utilities/otp.h \
  ../Middlewares/ST/STM32_WPAN/utilities/utilities_common.h \
- ../STM32_WPAN/App/p2p_client_app.h
+ ../STM32_WPAN/App/p2p_client_app.h ../Core/Inc/base_utilities.h \
+ ../Core/Inc/main.h
 ../Core/Inc/main.h:
 ../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal.h:
 ../Core/Inc/stm32wbxx_hal_conf.h:
@@ -233,3 +234,5 @@ STM32_WPAN/App/app_ble.o: ../STM32_WPAN/App/app_ble.c ../Core/Inc/main.h \
 ../Middlewares/ST/STM32_WPAN/utilities/otp.h:
 ../Middlewares/ST/STM32_WPAN/utilities/utilities_common.h:
 ../STM32_WPAN/App/p2p_client_app.h:
+../Core/Inc/base_utilities.h:
+../Core/Inc/main.h:

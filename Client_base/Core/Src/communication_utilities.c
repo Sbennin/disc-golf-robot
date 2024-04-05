@@ -5,7 +5,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "communication_utilities.h"
-#include "utilities.h"
+#include "base_utilities.h"
 #include <stdio.h>
 #include <string.h>
 

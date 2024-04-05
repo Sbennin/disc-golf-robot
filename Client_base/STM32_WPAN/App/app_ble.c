@@ -363,7 +363,12 @@ void APP_BLE_Init(void)
   HW_TS_Create(CFG_TIM_PROC_ID_ISR, &(BleApplicationContext.SwitchOffGPIO_timer_Id), hw_ts_SingleShot, Switch_OFF_GPIO);
 #endif
 
-  Start_Scanning();
+#if (OOB_DEMO == 0)
+  /**
+   * Start scanning
+   */
+  UTIL_SEQ_SetTask(1 << CFG_TASK_START_SCAN_ID, CFG_SCH_PRIO_0);
+#endif
   /* USER CODE BEGIN APP_BLE_Init_2 */
 
   /* USER CODE END APP_BLE_Init_2 */
@@ -868,7 +873,7 @@ static void Ble_Hci_Gap_Gatt_Init(void)
 
   if (role > 0)
   {
-    const char *name = "P2P_C";
+    const char *name = "BASE";
 
     ret = aci_gap_init(role,
                        CFG_PRIVACY,
