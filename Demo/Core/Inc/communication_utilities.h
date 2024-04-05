@@ -16,7 +16,11 @@
 
 
 /* Exported macro ------------------------------------------------------------*/
-
+#define BIG_MOTOR_GEAR_RATIO (9.75/2.4)
+#define COMMAND_DELAY 100 //ms
+#define MOTOR_SPEED_TOL 10 //rpm
+#define MOTOR_STOP_TOL 5 //rpm
+#define LAUNCH_DELAY_DIV 4 //determines when solenoid is triggered in rev cycle, smaller number is sooner
 
 /* Exported functions prototypes ---------------------------------------------*/
 uint16_t Verify_Test();
